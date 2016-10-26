@@ -1,0 +1,10 @@
+.text-bold{
+    font-weight: bold;
+}
+
+.info-box{
+    padding: 15px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    background-color: lightcyan;
+}
