@@ -1,0 +1,28 @@
+<div class="row" data-ng-controller="ProductDetailsController">
+    <div class="col-sm-6">
+        <img  data-ng-src="{{ product.img }}" alt="product img" class="img img-responsive img-rounded">
+    </div>
+    <div class="col-sm-6">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h2 class="page-header">{{ product.product_name }}</h2>
+                <p>
+                    <span class="text-bold"> Proizvajalec: </span> {{ product.manufacturer }}
+
+                </p>
+                <p>
+                    <span class="text-bold"> Neto Količina: </span> {{ product.nettQuantity }}
+                </p>
+                <p><span class="text-bold"> Min količina naročila: </span> 1 {{ product.packingUnit }}</p>
+                <p><span class="text-bold">EAN Koda</span> {{ product.ean }}</p>
+                <p class="well">
+                    <span class="text-bold">Opis: </span> <br>
+                    {{ product.description }}
+                </p>
+            </div>
+            <div class="panel-footer">
+                <h4>Cena {{ product.price | number: 2 }} EUR</h4>
+            </div>
+        </div>
+    </div>
+</div>

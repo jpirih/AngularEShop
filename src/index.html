@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" data-ng-app="app">
-<head>
 	<meta charset="UTF-8">
 	<!-- bootstrap library -->
 	<link rel="stylesheet" href="/libs/bootstrap/css/bootstrap.min.css">
+	<script src="/libs/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+	<script src="/libs/jquery/jquery.js" type="text/javascript"></script>
+
+
 	<!-- angular js -->
 	<script src="/libs/angular/angular.min.js" type="text/javascript"></script>
+	<script src="/libs/angular/angular-ui-router.js" type="text/javascript"></script>
+
 	<!-- cmopiled javascript file  -->
 	<script src="/js/all.js" type="text/javascript"></script>
 	<!-- my css file -->
@@ -13,29 +18,16 @@
 	<title>Angular Project</title>
 </head>
 <body>
+<!-- main navigation -->
+<navigation-directive></navigation-directive>
 <div class="container">
-	<div class="row">
-		<div class="col-sm-6 col-sm-offset-3">
-			<h1 class="page-header">Zdravo Kekec index.html</h1>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-sm-6">
-			<p class="well">
-				Danes je lep sončen dan <span class="text-bold">Prav zares</span>
-			</p>
-		</div>
-		<div class="col-sm-6">
-			<div class="info-box">
-				<h3>User Template Directive</h3>
-				<user-directive>
-
-				</user-directive>
-				</user-directive>
-			</div>
-		</div>
-	</div>
+	<!-- changing content -->
+	<ui-view></ui-view>
+				
 </div>
+
+
+
 
 </body>
 </html>

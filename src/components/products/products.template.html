@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-sm-6 col-md-4" data-ng-repeat="product in products">
+        <div class="thumbnail">
+            <img data-ng-src="{{ product.img }}">
+            <div class="caption">
+                <h3>{{ product.product_name }}</h3>
+                <h4 class="pull-right">Cena: {{ product.price | number: 2 }} EUR</h4>
+                <br>
+            </div>
+            <br>
+            <div class="well">
+                <a ui-sref="productDetails({productId: product.id })" class="btn btn-primary" role="button">Podrobnosti</a>
+                <button class="btn btn-success" data-ng-click="addToCart( product.id )">V Košarico</button>
+
+
+            </div>
+        </div>
+    </div>
+</div>

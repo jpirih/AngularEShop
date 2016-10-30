@@ -43,6 +43,14 @@ gulp.task('libs', function () {
 	gulp.src('./bower_components/bootstrap/dist/**')
 		.pipe(gulp.dest('./dist/libs/bootstrap'))
 		.pipe(notify('Bootstrap move success'));
+
+	gulp.src('./bower_components/angular-ui-router/release/angular-ui-router.js')
+		.pipe(gulp.dest('./dist/libs/angular'))
+		.pipe(notify('Angular ui-router include success'));
+
+	gulp.src('./bower_components/jquery/dist/jquery.js')
+		.pipe(gulp.dest('./dist/libs/jquery'))
+		.pipe(notify('Jquery include success'));
 });
 
 // move my custom css files to dist

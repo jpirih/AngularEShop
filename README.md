@@ -1,9 +1,10 @@
-# Angular Project
+# Angular E Shop
 
 ## About
-Ta repositorij ne vsebuje nobene uporabne vsebine. Služi le kot osnovna struktura
-Postavitev Angular Projetkta s pomočjo bower, node.js in gulp.
+To je en projektek  iz začetka učenja Angular js Framework-a.  V bistvu gre za 
+Zelo preprosto E trgovino 
 
+## Project Specification Framework
 Napisanih je samo nekaj osnovnih gulp taskov:
 * združevanje javascript datotek
 * združevanje css datotek
@@ -11,10 +12,17 @@ Napisanih je samo nekaj osnovnih gulp taskov:
 * poganjanje gulp-webserver
 * sprotno sledenje spremembam  na projektu
 
+## Useful features:
+
+1. Izberi izdelek
+2. Preglej podrobnosti o izdelku 
+3. Dodaj izdelek v košarico
+4. Preglej vse izdelke, ki so v košarici
+
 
 ## Namen
-Namen tega repositorija je "predloga" za postavitev angular projekta.
+Namen tega repositorija Učeneje Angular js Framework-a. 
 
-Podlanišče 26.10.2016       
+Podlanišče 30.10.2016       
 
 Janko Pirih
