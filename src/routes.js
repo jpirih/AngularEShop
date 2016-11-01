@@ -48,5 +48,26 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
         templateUrl: '/templates/cart.template.html'
     });
 
+    $stateProvider.state('orderComplete', {
+        url: '/cart/order/:orderId/order-complete',
+        templateUrl: '/templates/order-complete.template.html',
+        controller: function ($scope, OrdersFactory, $stateParams) {
+            $scope.orders = OrdersFactory.orders
+            $scope.orderTotal = 0;
+            for (order in $scope.orders)
+            {
+                if($stateParams.orderId == $scope.orders[order].id)
+                {
+                    $scope.currentOrder = $scope.orders[order];
+                    for (item in $scope.currentOrder.products)
+                    {
+                        $scope.orderTotal = $scope.orderTotal + $scope.currentOrder.products[item].total;
+                    }
+
+                }
+            }
+        }
+    });
+
 
 });

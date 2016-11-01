@@ -26,6 +26,6 @@ function ProductsDirectiveController ($scope, ProductsFactory, CartItemsFactory)
 				cartItemsTotal ++;
 			}
 		}
-
+		console.log(myCart);
 	};
 }

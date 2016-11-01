@@ -13,7 +13,7 @@ angular.module('app').factory('ProductsFactory', function(){
 		},
 		{
 			id: 2,
-			product_name: 'Testenine Barilla,špageti,polnozr.,št.5,500g',
+			product_name: 'Testenine Barilla, špageti, polnozr., št.5, 500g',
 			manufacturer:  'BARILLA ADRIATIK',
 			packingUnit: 'kos',
 			nettQuantity: '500 gramov',

@@ -4,11 +4,13 @@
     </div>
 </div>
 <div class="row" data-ng-controller="CartController">
-    <div class="col-sm-8 col-sm-offset-2">
+    <div class="col-sm-6" data-ng-if="items.length > 0">
+        <order-directive></order-directive>
+    </div>
+    <div class="col-sm-6 ">
         <table class="table table-responsive table-condensed table-bordered table-striped">
             <thead>
                 <tr class="table-header">
-                    <th>Ident</th>
                     <th>Izdelek</th>
                     <th>Količina</th>
                     <th>Cena</th>
@@ -17,10 +19,9 @@
             </thead>
             <tbody class="bg-info">
                 <tr data-ng-repeat="item in items">
-                    <td>{{ item.product.id }}</td>
-                    <td>{{ item.product.product_name }}</td>
+                    <td><a ui-sref="productDetails({productId: item.product.id})">{{ item.product.product_name }}</a></td>
                     <td>{{ item.quantity }}</td>
-                    <td>{{ item.product.price | number:2 }}</td>
+                    <td>{{ item.product.price | number: 2 }}</td>
                     <td>{{ item.total | number: 2 }}</td>
                 </tr>
             </tbody>

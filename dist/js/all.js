@@ -50,19 +50,28 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
         templateUrl: '/templates/cart.template.html'
     });
 
+    $stateProvider.state('orderComplete', {
+        url: '/cart/order/:orderId/order-complete',
+        templateUrl: '/templates/order-complete.template.html',
+        controller: function ($scope, OrdersFactory, $stateParams) {
+            $scope.orders = OrdersFactory.orders
+            $scope.orderTotal = 0;
+            for (order in $scope.orders)
+            {
+                if($stateParams.orderId == $scope.orders[order].id)
+                {
+                    $scope.currentOrder = $scope.orders[order];
+                    for (item in $scope.currentOrder.products)
+                    {
+                        $scope.orderTotal = $scope.orderTotal + $scope.currentOrder.products[item].total;
+                    }
 
-});
-/**
- * Created by janko on 26/10/2016.
- */
-angular.module('app').directive('userDirective', function () {
-    return {
-        restrict: 'E',
-        templateUrl: '/templates/user.template.html'
-    };
-});
-angular.module('app').controller('UsersController', function($scope){
-	
+                }
+            }
+        }
+    });
+
+
 });
 angular.module('app').factory('CartItemsFactory', function () {
     var items = [];
@@ -73,15 +82,17 @@ angular.module('app').factory('CartItemsFactory', function () {
 });
 
 // cart controller
-angular.module('app').controller('CartController', function ($scope, CartItemsFactory) {
+angular.module('app').controller('CartController', function ($scope, CartItemsFactory, $stateParams) {
     $scope.items = CartItemsFactory.items;
+    $scope.firstName = '';
+    $scope.lastName = '';
     var cartTotal = 0;
 
     for (item in $scope.items)
     {
         cartTotal = cartTotal += $scope.items[item].total;
     }
-    $scope.cartTotal = cartTotal;
+    $scope.cartTotal = cartTotal
 });
 
 /**
@@ -132,7 +143,7 @@ function ProductsDirectiveController ($scope, ProductsFactory, CartItemsFactory)
 				cartItemsTotal ++;
 			}
 		}
-
+		console.log(myCart);
 	};
 }
 angular.module('app').factory('ProductsFactory', function(){
@@ -150,7 +161,7 @@ angular.module('app').factory('ProductsFactory', function(){
 		},
 		{
 			id: 2,
-			product_name: 'Testenine Barilla,špageti,polnozr.,št.5,500g',
+			product_name: 'Testenine Barilla, špageti, polnozr., št.5, 500g',
 			manufacturer:  'BARILLA ADRIATIK',
 			packingUnit: 'kos',
 			nettQuantity: '500 gramov',
@@ -174,6 +185,65 @@ angular.module('app').factory('ProductsFactory', function(){
 	];
 	return {products: products};
 });
+angular.module('app').controller('OrderController', function ($scope, CartItemsFactory, OrdersFactory, $state, $stateParams) {
+    // form fields
+    $scope.firstName = '';
+    $scope.lastName = '';
+    $scope.customerEmail = '';
+    $scope.address = '';
+    $scope.zipCode = null;
+    $scope.city = '';
+    $scope.country = '';
+    $scope.products = CartItemsFactory.items;
+    $scope.orders = OrdersFactory.orders;
+    // place order
+    $scope.orderUP = function (firstName, lastName, customerEmail, address, zipCode, city, country)
+    {
+        var orderId = $scope.orders.length + 1;
+        $scope.orders.push({
+            id: orderId,
+            firstName: firstName,
+            lastName: lastName,
+            email: customerEmail,
+            address: address,
+            zipCode: zipCode,
+            city: city,
+            country: country,
+            products: $scope.products
+        }) ;
+
+        $state.go('orderComplete',{orderId: orderId});
+    };
+
+
+
+});
+
+angular.module('app').directive('orderDirective', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '/templates/order-form.template.html'
+    };
+});
+
+angular.module('app').factory('OrdersFactory', function () {
+   var orders = [];
+    return {orders: orders}
+});
+
+/**
+ * Created by janko on 26/10/2016.
+ */
+angular.module('app').directive('userDirective', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '/templates/user.template.html'
+    };
+});
+angular.module('app').controller('UsersController', function($scope){
+	
+});
+
 /**
  * Created by janko on 28/10/2016.
  */
