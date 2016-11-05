@@ -1,16 +1,10 @@
 <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
-        <h3>Najboljši izdelki po najugodnejših cenah</h3>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-12">
-        <categories-directive></categories-directive>
+        <h2 class="on-sale">AKCIJA!!!</h2>
     </div>
 </div>
 <br>
-<div class="row" data-ng-controller="ProductsController">
+<div class="row">
     <div class="col-sm-6 col-md-4" data-ng-repeat="product in products">
         <div class="thumbnail">
             <img data-ng-src="{{ product.image }}">
@@ -18,15 +12,20 @@
                 <h3>{{ product.name }}</h3>
                 <h4 class="pull-right">Cea: {{ product.price | number: 2 }} EUR</h4>
                 <br>
-            </div>
-            <p>
                 <a ui-sref="productDetails({productId: product.id })" class="btn btn-primary" role="button">
                     <span class="glyphicon glyphicon-menu-right"></span> Podrobnosti
                 </a>
-            </p>
+            </div>
+            <br>
             <div class="well">
                 <add-to-cart-directive id="product.id"></add-to-cart-directive>
             </div>
         </div>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+        <a ui-sref="products" class="btn btn-primary btn-block btn-lg">Preglej celotno ponudbo</a>
     </div>
 </div>

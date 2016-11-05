@@ -1,28 +1,42 @@
 <div class="row" data-ng-controller="ProductDetailsController">
+    <!-- product image -->
     <div class="col-sm-6">
-        <img  data-ng-src="{{ product.img }}" alt="product img" class="img img-responsive img-rounded">
+        <img  data-ng-src="{{ product.image }}" alt="product img" class="img img-responsive img-rounded">
     </div>
+    <!-- product details -->
     <div class="col-sm-6">
         <div class="panel panel-default">
             <div class="panel-body">
-                <h2 class="page-header">{{ product.product_name }}</h2>
+                <h2 class="page-header">{{ product.name }}</h2>
                 <p>
-                    <span class="text-bold"> Proizvajalec: </span> {{ product.manufacturer }}
+                    <span class="text-bold"> Blagovna znamka: </span> {{ product.brand }}
 
                 </p>
                 <p>
-                    <span class="text-bold"> Neto Količina: </span> {{ product.nettQuantity }}
+                    <span class="text-bold"> Tags: </span> {{ product.tagline }}
                 </p>
-                <p><span class="text-bold"> Min količina naročila: </span> 1 {{ product.packingUnit }}</p>
-                <p><span class="text-bold">EAN Koda</span> {{ product.ean }}</p>
+                <p><span class="text-bold"> Barva: </span>  {{ product.color }}</p>
                 <p class="well">
                     <span class="text-bold">Opis: </span> <br>
                     {{ product.description }}
+                </p>
+                <hr>
+                <p class="alert alert-success" data-ng-show="product.stock > 0">
+                     <span class="glyphicon glyphicon-ok"></span> Dobavljivo takoj
+                </p>
+                <p class="alert alert-warning" data-ng-show="product.stock == 0">
+                    <span class="glyphicon glyphicon-warning-sign"></span>
+                    Izdelka trenutno ni na zalogi. Dobavljivo po {{ product.availableOn}}
                 </p>
             </div>
             <div class="panel-footer">
                 <h4>Cena {{ product.price | number: 2 }} EUR</h4>
             </div>
+        </div>
+        <!-- add to cart -->
+        <div class="info-box">
+            <h3>Dodaj v Košarico</h3>
+            <add-to-cart-directive id="product.id"></add-to-cart-directive>
         </div>
     </div>
 </div>

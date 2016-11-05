@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
-        <h3>Najboljši izdelki po najugodnejših cenah</h3>
+        <h3>{{ thisCategory.category }}</h3>
     </div>
 </div>
 
@@ -10,8 +10,8 @@
     </div>
 </div>
 <br>
-<div class="row" data-ng-controller="ProductsController">
-    <div class="col-sm-6 col-md-4" data-ng-repeat="product in products">
+<div class="row">
+    <div class="col-sm-6 col-md-4" data-ng-repeat="product in categoryItems">
         <div class="thumbnail">
             <img data-ng-src="{{ product.image }}">
             <div class="caption">

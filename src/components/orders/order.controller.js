@@ -9,23 +9,34 @@ angular.module('app').controller('OrderController', function ($scope, CartItemsF
     $scope.country = '';
     $scope.products = CartItemsFactory.items;
     $scope.orders = OrdersFactory.orders;
+    var products = [];
+
+    for (item in $scope.products)
+    {
+        products.push({
+            id: $scope.products[item].product.id,
+            quantity: $scope.products[item].quantity
+        });
+    }
     // place order
     $scope.orderUP = function (firstName, lastName, customerEmail, address, zipCode, city, country)
     {
-        var orderId = $scope.orders.length + 1;
-        $scope.orders.push({
-            id: orderId,
+        var newOrder = new OrdersFactory({
             firstName: firstName,
             lastName: lastName,
             email: customerEmail,
             address: address,
-            zipCode: zipCode,
+            zip: zipCode,
             city: city,
             country: country,
-            products: $scope.products
-        }) ;
+            products: products
+        });
 
-        $state.go('orderComplete',{orderId: orderId});
+        newOrder.$save().then(function success(status) {
+            alert(status.status);
+
+        });
+
     };
 
 

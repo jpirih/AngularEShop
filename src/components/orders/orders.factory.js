@@ -1,4 +1,3 @@
-angular.module('app').factory('OrdersFactory', function () {
-   var orders = [];
-    return {orders: orders}
+angular.module('app').factory('OrdersFactory', function ($resource) {
+   return $resource('http://smartninja.betoo.si/api/eshop/orders');
 });

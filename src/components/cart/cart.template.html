@@ -4,7 +4,7 @@
     </div>
 </div>
 <div class="row" data-ng-controller="CartController">
-    <div class="col-sm-6" data-ng-if="items.length > 0">
+    <div class="col-sm-6"  data-ng-if="items.length > 0">
         <order-directive></order-directive>
     </div>
     <div class="col-sm-6 ">
@@ -19,7 +19,7 @@
             </thead>
             <tbody class="bg-info">
                 <tr data-ng-repeat="item in items">
-                    <td><a ui-sref="productDetails({productId: item.product.id})">{{ item.product.product_name }}</a></td>
+                    <td><a ui-sref="productDetails({productId: item.product.id})">{{ item.product.name }}</a></td>
                     <td>{{ item.quantity }}</td>
                     <td>{{ item.product.price | number: 2 }}</td>
                     <td>{{ item.total | number: 2 }}</td>

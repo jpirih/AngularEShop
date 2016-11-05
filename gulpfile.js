@@ -44,9 +44,13 @@ gulp.task('libs', function () {
 		.pipe(gulp.dest('./dist/libs/bootstrap'))
 		.pipe(notify('Bootstrap move success'));
 
-	gulp.src('./bower_components/angular-ui-router/release/angular-ui-router.js')
+	gulp.src('./bower_components/angular-ui-router/release/angular-ui-router.min.js')
 		.pipe(gulp.dest('./dist/libs/angular'))
 		.pipe(notify('Angular ui-router include success'));
+
+	gulp.src('./bower_components/angular-resource/angular-resource.min.js')
+		.pipe(gulp.dest('./dist/libs/angular'))
+		.pipe(notify('Angular resource included successfully!'));
 
 	gulp.src('./bower_components/jquery/dist/jquery.js')
 		.pipe(gulp.dest('./dist/libs/jquery'))

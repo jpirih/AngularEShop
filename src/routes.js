@@ -28,6 +28,8 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
         template: '<h2>Page Not Found Error 404 </h2>'
     });
 
+    // static sites
+
     $stateProvider.state('about', {
         url: '/about',
         templateUrl: '/templates/about-template.html'
@@ -38,9 +40,15 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
         templateUrl: '/templates/terms.template.html'
     });
 
+    // app routes
     $stateProvider.state('productDetails', {
         url: '/products/:productId',
         templateUrl: '/templates/product-details.template.html'
+    });
+
+    $stateProvider.state('products', {
+        url: '/products',
+        templateUrl: '/templates/products.template.html'
     });
 
     $stateProvider.state('cart', {
@@ -48,11 +56,31 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
         templateUrl: '/templates/cart.template.html'
     });
 
+    // category products
+    $stateProvider.state('categoryProducts', {
+        url:'/categories/:categoryId/products',
+        templateUrl: 'templates/category-products.template.html',
+        controller: function ($scope, $stateParams, CategoryProductsFactory, CategoriesFactory) {
+            $scope.categoryItems = CategoryProductsFactory.query({id: $stateParams.categoryId});
+            var categories = CategoriesFactory.query({});
+            console.log(categories.category);
+            for(item in categories)
+            {
+                if(categories[item].id == $stateParams.categoryId)
+                {
+                    console.log(categories[item]);
+                }
+            }
+            console.log($scope.thisCategory);
+
+        }
+    });
+
     $stateProvider.state('orderComplete', {
-        url: '/cart/order/:orderId/order-complete',
+        url: '/cart/order/order-complete',
         templateUrl: '/templates/order-complete.template.html',
         controller: function ($scope, OrdersFactory, $stateParams) {
-            $scope.orders = OrdersFactory.orders
+            $scope.orders = OrdersFactory.orders;
             $scope.orderTotal = 0;
             for (order in $scope.orders)
             {
