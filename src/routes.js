@@ -61,7 +61,10 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
         url:'/categories/:categoryId/products',
         templateUrl: 'templates/category-products.template.html',
         controller: function ($scope, $stateParams, CategoryProductsFactory, CategoriesFactory) {
-            $scope.categoryItems = CategoryProductsFactory.query({id: $stateParams.categoryId});
+            $scope.loading = true;
+            $scope.categoryItems = CategoryProductsFactory.query({id: $stateParams.categoryId}, function (success) {
+                $scope.loading = false;
+            });
             var categories = CategoriesFactory.query({});
             console.log(categories.category);
             for(item in categories)
@@ -78,23 +81,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
 
     $stateProvider.state('orderComplete', {
         url: '/cart/order/order-complete',
-        templateUrl: '/templates/order-complete.template.html',
-        controller: function ($scope, OrdersFactory, $stateParams) {
-            $scope.orders = OrdersFactory.orders;
-            $scope.orderTotal = 0;
-            for (order in $scope.orders)
-            {
-                if($stateParams.orderId == $scope.orders[order].id)
-                {
-                    $scope.currentOrder = $scope.orders[order];
-                    for (item in $scope.currentOrder.products)
-                    {
-                        $scope.orderTotal = $scope.orderTotal + $scope.currentOrder.products[item].total;
-                    }
-
-                }
-            }
-        }
+        templateUrl: '/templates/order-complete.template.html'
     });
 
 

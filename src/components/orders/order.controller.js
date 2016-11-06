@@ -33,7 +33,7 @@ angular.module('app').controller('OrderController', function ($scope, CartItemsF
         });
 
         newOrder.$save().then(function success(status) {
-            alert(status.status);
+            $state.go('orderComplete');
 
         });
 

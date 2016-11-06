@@ -63,7 +63,10 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
         url:'/categories/:categoryId/products',
         templateUrl: 'templates/category-products.template.html',
         controller: function ($scope, $stateParams, CategoryProductsFactory, CategoriesFactory) {
-            $scope.categoryItems = CategoryProductsFactory.query({id: $stateParams.categoryId});
+            $scope.loading = true;
+            $scope.categoryItems = CategoryProductsFactory.query({id: $stateParams.categoryId}, function (success) {
+                $scope.loading = false;
+            });
             var categories = CategoriesFactory.query({});
             console.log(categories.category);
             for(item in categories)
@@ -80,23 +83,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
 
     $stateProvider.state('orderComplete', {
         url: '/cart/order/order-complete',
-        templateUrl: '/templates/order-complete.template.html',
-        controller: function ($scope, OrdersFactory, $stateParams) {
-            $scope.orders = OrdersFactory.orders;
-            $scope.orderTotal = 0;
-            for (order in $scope.orders)
-            {
-                if($stateParams.orderId == $scope.orders[order].id)
-                {
-                    $scope.currentOrder = $scope.orders[order];
-                    for (item in $scope.currentOrder.products)
-                    {
-                        $scope.orderTotal = $scope.orderTotal + $scope.currentOrder.products[item].total;
-                    }
-
-                }
-            }
-        }
+        templateUrl: '/templates/order-complete.template.html'
     });
 
 
@@ -134,8 +121,6 @@ function addToCartController($scope, ProductsFactory, CartItemsFactory) {
                 myCart.push({product: selectedItem, quantity: $scope.quantity, total: itemTotal});
             }
         }
-        
-
     };
 }
 
@@ -170,6 +155,16 @@ angular.module('app').controller('CartController', function ($scope, CartItemsFa
 
 });
 
+/**
+ * Created by janko on 29/10/2016.
+ */
+angular.module('app').directive('homeDirective', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '/templates/home.template.html'
+    };
+});
+
 angular.module('app').directive('categoriesDirective', function () {
     return {
         restrict: 'E',
@@ -193,16 +188,6 @@ angular.module('app').factory('CategoriesFactory', function ($resource, $cacheFa
 });
 angular.module('app').factory('CategoryProductsFactory', function ($resource) {
     return $resource('http://smartninja.betoo.si/api/eshop/categories/:id/products');
-});
-
-/**
- * Created by janko on 29/10/2016.
- */
-angular.module('app').directive('homeDirective', function () {
-    return {
-        restrict: 'E',
-        templateUrl: '/templates/home.template.html'
-    };
 });
 
 angular.module('app').controller('OrderController', function ($scope, CartItemsFactory, OrdersFactory, $state, $stateParams) {
@@ -240,7 +225,7 @@ angular.module('app').controller('OrderController', function ($scope, CartItemsF
         });
 
         newOrder.$save().then(function success(status) {
-            alert(status.status);
+            $state.go('orderComplete');
 
         });
 
@@ -261,6 +246,31 @@ angular.module('app').factory('OrdersFactory', function ($resource) {
    return $resource('http://smartninja.betoo.si/api/eshop/orders');
 });
 
+/**
+ * Created by janko on 26/10/2016.
+ */
+angular.module('app').directive('userDirective', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '/templates/user.template.html'
+    };
+});
+angular.module('app').controller('UsersController', function($scope){
+	
+});
+
+/**
+ * Created by janko on 28/10/2016.
+ */
+angular.module('app').directive('navigationDirective', function () {
+    return{
+        restrict: 'E',
+        scope: true,
+        templateUrl: '/templates/navigation-template.html'
+    };
+});
+
+
 angular.module('app').controller('ProductDetailsController', function ($scope, ProductsFactory, $stateParams) {
     $scope.product = ProductsFactory.get({id: $stateParams.productId});
 });
@@ -277,12 +287,22 @@ angular.module('app').directive('onSaleDirective', function ()
 
 // productsFactory controller
 function OnSaleProductsController ($scope, ProductsFactory) {
-	$scope.products = ProductsFactory.query({onlyOnSale: true});
+	$scope.loading = true;
+	$scope.products = ProductsFactory.query({onlyOnSale: true}, function (success) {
+		$scope.loading = false;
+	});
 
 }
 angular.module('app').controller('ProductsController', function ($stateParams, $scope, ProductsFactory) {
+    $scope.loading = true;
+    // search for product by name
+    $scope.$watch('query', function (newValue) {
+        $scope.products = ProductsFactory.query({query: newValue});
+    });
     // list of all products /products
-    $scope.products = ProductsFactory.query({});
+    $scope.products = ProductsFactory.query({}, function (success) {
+        $scope.loading = false;
+    });
 
 });
 angular.module('app').factory('ProductsFactory', function($resource, $cacheFactory) {
@@ -324,27 +344,3 @@ angular.module('app').factory('ProductsFactory', function($resource, $cacheFacto
 	 ];*/
 	return $resource('http://smartninja.betoo.si/api/eshop/products/:id');
 });
-/**
- * Created by janko on 26/10/2016.
- */
-angular.module('app').directive('userDirective', function () {
-    return {
-        restrict: 'E',
-        templateUrl: '/templates/user.template.html'
-    };
-});
-angular.module('app').controller('UsersController', function($scope){
-	
-});
-
-/**
- * Created by janko on 28/10/2016.
- */
-angular.module('app').directive('navigationDirective', function () {
-    return{
-        restrict: 'E',
-        scope: true,
-        templateUrl: '/templates/navigation-template.html'
-    };
-});
-

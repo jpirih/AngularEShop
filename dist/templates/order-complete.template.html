@@ -3,45 +3,10 @@
         <h1 class="page-header">Hvala za nakup</h1>
     </div>
 </div>
-<div class="row">
-    <div class="col-sm-6">
-        <h3>Kupec</h3>
-        <div class="info-box">
-            <h4>{{ currentOrder.firstName}} {{ currentOrder.lastName }}</h4>
-            <p>{{ currentOrder.address }}</p>
-            <p>{{ currentOrder.zipCode }} {{ currentOrder.city }}</p>
-            <p>{{ currentOrder.country }}</p>
-            <p>
-                <span class="text-bold">E-mail: </span> {{ currentOrder.email }}
-            </p>
-        </div>
-        <hr>
-    </div>
-    <div class="row">
-        <div class="col-sm-8 col-sm-offset-2">
-            <table class="table table-responsive tale-bordered table-striped table-condensed">
-                <thead>
-                    <tr class="table-header">
-                        <th>Ident</th>
-                        <th>Izdelek</th>
-                        <th>Količina</th>
-                        <th>Cena €</th>
-                        <th>Vrednost €</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr data-ng-repeat="product in currentOrder.products">
-                        <td>{{ product.product.id }}</td>
-                        <td>{{ product.product.product_name }}</td>
-                        <td>{{ product.quantity }}</td>
-                        <td>{{ product.product.price | number: 2 }}</td>
-                        <td>{{ product.total | number: 2 }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="well pull-right">
-                <h3>Skupaj za Plačilo: {{ orderTotal | number: 2 }} €</h3>
-            </div>
-        </div>
+<div class="row" data-ng-controller="OrderController">
+    <div class="col-sm-6 col-sm-offset-3">
+        <div class="alert alert-success">
+            <span class="glyphicon glyphicon-ok"></span>
+            Uspešno ste oddali naročilo.
     </div>
 </div>

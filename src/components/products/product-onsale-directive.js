@@ -10,6 +10,9 @@ angular.module('app').directive('onSaleDirective', function ()
 
 // productsFactory controller
 function OnSaleProductsController ($scope, ProductsFactory) {
-	$scope.products = ProductsFactory.query({onlyOnSale: true});
+	$scope.loading = true;
+	$scope.products = ProductsFactory.query({onlyOnSale: true}, function (success) {
+		$scope.loading = false;
+	});
 
 }

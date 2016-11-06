@@ -31,7 +31,5 @@ function addToCartController($scope, ProductsFactory, CartItemsFactory) {
                 myCart.push({product: selectedItem, quantity: $scope.quantity, total: itemTotal});
             }
         }
-
-
     };
 }
