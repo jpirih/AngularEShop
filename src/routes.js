@@ -16,7 +16,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
         url:'/prva',
         template: '<h1>Prva stran</h1>'
     });
-
+    // testing stateProvider routes
     $stateProvider.state('druga',
     {
         url:'/druga',
