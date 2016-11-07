@@ -1,4 +1,4 @@
-angular.module('app', ['ui.router', 'ngResource']);
+angular.module('app', ['ui.router', 'ngResource', 'ui.bootstrap']);
 
 /**
  * Created by janko on 28/10/2016.
@@ -155,16 +155,6 @@ angular.module('app').controller('CartController', function ($scope, CartItemsFa
 
 });
 
-/**
- * Created by janko on 29/10/2016.
- */
-angular.module('app').directive('homeDirective', function () {
-    return {
-        restrict: 'E',
-        templateUrl: '/templates/home.template.html'
-    };
-});
-
 angular.module('app').directive('categoriesDirective', function () {
     return {
         restrict: 'E',
@@ -188,6 +178,16 @@ angular.module('app').factory('CategoriesFactory', function ($resource, $cacheFa
 });
 angular.module('app').factory('CategoryProductsFactory', function ($resource) {
     return $resource('http://smartninja.betoo.si/api/eshop/categories/:id/products');
+});
+
+/**
+ * Created by janko on 29/10/2016.
+ */
+angular.module('app').directive('homeDirective', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '/templates/home.template.html'
+    };
 });
 
 angular.module('app').controller('OrderController', function ($scope, CartItemsFactory, OrdersFactory, $state, $stateParams) {
@@ -245,31 +245,6 @@ angular.module('app').directive('orderDirective', function () {
 angular.module('app').factory('OrdersFactory', function ($resource) {
    return $resource('http://smartninja.betoo.si/api/eshop/orders');
 });
-
-/**
- * Created by janko on 26/10/2016.
- */
-angular.module('app').directive('userDirective', function () {
-    return {
-        restrict: 'E',
-        templateUrl: '/templates/user.template.html'
-    };
-});
-angular.module('app').controller('UsersController', function($scope){
-	
-});
-
-/**
- * Created by janko on 28/10/2016.
- */
-angular.module('app').directive('navigationDirective', function () {
-    return{
-        restrict: 'E',
-        scope: true,
-        templateUrl: '/templates/navigation-template.html'
-    };
-});
-
 
 angular.module('app').controller('ProductDetailsController', function ($scope, ProductsFactory, $stateParams) {
     $scope.product = ProductsFactory.get({id: $stateParams.productId});
@@ -342,5 +317,40 @@ angular.module('app').factory('ProductsFactory', function($resource, $cacheFacto
 	 },
 
 	 ];*/
-	return $resource('http://smartninja.betoo.si/api/eshop/products/:id');
+	return $resource('http://smartninja.betoo.si/api/eshop/products/:id', {}, {
+        query:{cache:true, isArray:true},
+        get:{cache:true}    
+    });
+});
+/**
+ * Created by janko on 26/10/2016.
+ */
+angular.module('app').directive('userDirective', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '/templates/user.template.html'
+    };
+});
+angular.module('app').controller('UsersController', function($scope){
+	
+});
+
+angular.module('app').controller('NavbarCollapseController', function($scope){
+   $scope.isNavCollapsed = true;
+  $scope.isCollapsed = false; 
+});
+/**
+ * Created by janko on 28/10/2016.
+ */
+angular.module('app').directive('navigationDirective', function () {
+    return{
+        restrict: 'E',
+        scope: true,
+        templateUrl: '/templates/navigation-template.html'
+    };
+});
+
+
+angular.module('app').controller('ProductSearchController', function($scope, ProductsFactory){
+    $scope.products = ProductsFactory.query({});
 });

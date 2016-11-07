@@ -51,6 +51,10 @@ gulp.task('libs', function () {
 	gulp.src('./bower_components/angular-resource/angular-resource.min.js')
 		.pipe(gulp.dest('./dist/libs/angular'))
 		.pipe(notify('Angular resource included successfully!'));
+    
+    gulp.src('./bower_components/angular-bootstrap/ui-bootstrap-tpls.js')
+        .pipe(gulp.dest('./dist/libs/angular'))
+        .pipe(notify('Angular bootstrap included'));
 
 	gulp.src('./bower_components/jquery/dist/jquery.js')
 		.pipe(gulp.dest('./dist/libs/jquery'))
@@ -72,6 +76,6 @@ gulp.task('watch', ['serve'], function () {
 	gulp.watch(['src/**/*.js'], ['scripts']);
 	gulp.watch(['src/**/*.html'], ['move']);
 	gulp.watch(['src/**/*.css'], ['loadCss']);
-});
+}); 	
 
 

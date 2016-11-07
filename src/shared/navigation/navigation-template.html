@@ -1,8 +1,9 @@
-<div class="navbar navbar-inverse">
-    <div class="container-fluid">
+<div data-ng-controller="NavbarCollapseController">
+    <div class="navbar navbar-inverse">
+    <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navigation" aria-expanded="false">
+            <button type="button" class="navbar-toggle" ng-click="isNavCollapsed = !isNavCollapsed">
 
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -12,7 +13,7 @@
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="main-navigation">
+        <div class="collapse navbar-collapse" uib-collapse="isNavCollapsed">
             <ul class="nav navbar-nav">
                 <li><a ui-sref="about">About E-shop <span class="sr-only">(current)</span></a></li>
                 <li><a ui-sref="terms">Terms of use</a></li>
@@ -31,7 +32,7 @@
             </ul>
             <form class="navbar-form navbar-left">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
+                    <input type="text" data-ng-model="selected" class="form-control"  uib-typeahead="item for item.name in products | filter:$viewValue" placeholder="Search">
                 </div>
                 <button type="submit" class="btn btn-default">Submit</button>
             </form>
@@ -50,4 +51,5 @@
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
+</div>
 </div>

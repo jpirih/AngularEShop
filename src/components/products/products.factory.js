@@ -35,5 +35,8 @@ angular.module('app').factory('ProductsFactory', function($resource, $cacheFacto
 	 },
 
 	 ];*/
-	return $resource('http://smartninja.betoo.si/api/eshop/products/:id');
+	return $resource('http://smartninja.betoo.si/api/eshop/products/:id', {}, {
+        query:{cache:true, isArray:true},
+        get:{cache:true}    
+    });
 });
