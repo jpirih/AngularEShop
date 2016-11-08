@@ -18,7 +18,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
         url:'/prva',
         template: '<h1>Prva stran</h1>'
     });
-
+    // testing stateProvider routes
     $stateProvider.state('druga',
     {
         url:'/druga',
@@ -62,27 +62,20 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state('categoryProducts', {
         url:'/categories/:categoryId/products',
         templateUrl: 'templates/category-products.template.html',
-        controller: function ($scope, $stateParams, CategoryProductsFactory, CategoriesFactory) {
+        controller: function ($scope, $stateParams, CategoryProductsFactory, CategoriesFactory)
+        {
             $scope.loading = true;
             $scope.categoryItems = CategoryProductsFactory.query({id: $stateParams.categoryId}, function (success) {
                 $scope.loading = false;
             });
-            var categories = CategoriesFactory.query({});
-            console.log(categories.category);
-            for(item in categories)
-            {
-                if(categories[item].id == $stateParams.categoryId)
-                {
-                    console.log(categories[item]);
-                }
-            }
-            console.log($scope.thisCategory);
+
 
         }
     });
 
     $stateProvider.state('orderComplete', {
         url: '/cart/order/order-complete',
+        params: {data: null},
         templateUrl: '/templates/order-complete.template.html'
     });
 
@@ -203,6 +196,7 @@ angular.module('app').controller('OrderController', function ($scope, CartItemsF
     $scope.orders = OrdersFactory.orders;
     var products = [];
 
+
     for (item in $scope.products)
     {
         products.push({
@@ -224,12 +218,15 @@ angular.module('app').controller('OrderController', function ($scope, CartItemsF
             products: products
         });
 
-        newOrder.$save().then(function success(status) {
-            $state.go('orderComplete');
+        newOrder.$save(function (response) {
 
+            $scope.msg = {msg: response.status};
+            $state.go('orderComplete', {data: $scope.msg});
+            console.log($scope.msg);
         });
-
     };
+
+    $scope.resData = $state.params.data;
 
 
 
@@ -317,10 +314,7 @@ angular.module('app').factory('ProductsFactory', function($resource, $cacheFacto
 	 },
 
 	 ];*/
-	return $resource('http://smartninja.betoo.si/api/eshop/products/:id', {}, {
-        query:{cache:true, isArray:true},
-        get:{cache:true}    
-    });
+	return $resource('http://smartninja.betoo.si/api/eshop/products/:id');
 });
 /**
  * Created by janko on 26/10/2016.
@@ -351,6 +345,20 @@ angular.module('app').directive('navigationDirective', function () {
 });
 
 
-angular.module('app').controller('ProductSearchController', function($scope, ProductsFactory){
+angular.module('app').controller('ProductSearchController', function($scope, $http, ProductsFactory, $state){
+    $scope.selected = "";
     $scope.products = ProductsFactory.query({});
+    $scope.getItems = function (query) {
+        return $http.get('http://smartninja.betoo.si/api/eshop/products', {params: {query: query}}).then(function (response) {
+            return response.data;
+        });
+    };
+
+    $scope.getProductDetails = function (product) {
+
+        $scope.product = ProductsFactory.get({productId: product.id});
+        console.log($scope.product.id);
+        $state.go('productDetails', {productId: $scope.product.id});
+
+    }
 });

@@ -30,11 +30,11 @@
                     </ul>
                 </li>
             </ul>
-            <form class="navbar-form navbar-left">
+            <form class="navbar-form navbar-left" data-ng-controller="ProductSearchController">
                 <div class="form-group">
-                    <input type="text" data-ng-model="selected" class="form-control"  uib-typeahead="item for item.name in products | filter:$viewValue" placeholder="Search">
+                    <input type="text" data-ng-model="selected" class="form-control"  uib-typeahead="item as item.name  for item in getItems($viewValue)" placeholder="Search">
                 </div>
-                <button type="submit" class="btn btn-default">Submit</button>
+                <button  class="btn btn-success" data-ng-click="getProductDetails(selected)">Go</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
                 <li><a ui-sref="products">Products</a></li>

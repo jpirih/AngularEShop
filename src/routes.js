@@ -60,27 +60,20 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state('categoryProducts', {
         url:'/categories/:categoryId/products',
         templateUrl: 'templates/category-products.template.html',
-        controller: function ($scope, $stateParams, CategoryProductsFactory, CategoriesFactory) {
+        controller: function ($scope, $stateParams, CategoryProductsFactory, CategoriesFactory)
+        {
             $scope.loading = true;
             $scope.categoryItems = CategoryProductsFactory.query({id: $stateParams.categoryId}, function (success) {
                 $scope.loading = false;
             });
-            var categories = CategoriesFactory.query({});
-            console.log(categories.category);
-            for(item in categories)
-            {
-                if(categories[item].id == $stateParams.categoryId)
-                {
-                    console.log(categories[item]);
-                }
-            }
-            console.log($scope.thisCategory);
+
 
         }
     });
 
     $stateProvider.state('orderComplete', {
         url: '/cart/order/order-complete',
+        params: {data: null},
         templateUrl: '/templates/order-complete.template.html'
     });
 

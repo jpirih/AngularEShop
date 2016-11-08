@@ -11,6 +11,7 @@ angular.module('app').controller('OrderController', function ($scope, CartItemsF
     $scope.orders = OrdersFactory.orders;
     var products = [];
 
+
     for (item in $scope.products)
     {
         products.push({
@@ -32,12 +33,15 @@ angular.module('app').controller('OrderController', function ($scope, CartItemsF
             products: products
         });
 
-        newOrder.$save().then(function success(status) {
-            $state.go('orderComplete');
+        newOrder.$save(function (response) {
 
+            $scope.msg = {msg: response.status};
+            $state.go('orderComplete', {data: $scope.msg});
+            console.log($scope.msg);
         });
-
     };
+
+    $scope.resData = $state.params.data;
 
 
 
