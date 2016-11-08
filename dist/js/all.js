@@ -31,7 +31,6 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
     });
 
     // static sites
-
     $stateProvider.state('about', {
         url: '/about',
         templateUrl: '/templates/about-template.html'
@@ -42,17 +41,17 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
         templateUrl: '/templates/terms.template.html'
     });
 
-    // app routes
+    // product details
     $stateProvider.state('productDetails', {
         url: '/products/:productId',
         templateUrl: '/templates/product-details.template.html'
     });
-
+    // all products list
     $stateProvider.state('products', {
         url: '/products',
         templateUrl: '/templates/products.template.html'
     });
-
+    // my cart
     $stateProvider.state('cart', {
         url: '/cart',
         templateUrl: '/templates/cart.template.html',
@@ -62,6 +61,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
     // category products
     $stateProvider.state('categoryProducts', {
         url:'/categories/:categoryId/products',
+        params: {categoryData: null},
         templateUrl: 'templates/category-products.template.html',
         controller: CategoriesController
     });
