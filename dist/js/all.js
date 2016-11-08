@@ -55,7 +55,8 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
 
     $stateProvider.state('cart', {
         url: '/cart',
-        templateUrl: '/templates/cart.template.html'
+        templateUrl: '/templates/cart.template.html',
+        controller: CartController
     });
 
     // category products
@@ -82,35 +83,9 @@ angular.module('app').directive('addToCartDirective', function () {
         restrict: 'E',
         scope: {id: '='},
         templateUrl: '/templates/add-to-cart.template.html',
-        controller: addToCartController
+        controller: CartController
     }
 });
-
-function addToCartController($scope, ProductsFactory, CartItemsFactory) {
-    $scope.products = ProductsFactory.query({});
-    var myCart = CartItemsFactory.items;
-    $scope.quantity = 1;
-    var cartItemsTotal = 0;
-    var itemTotal = 0;
-    var selectedItem = {};
-
-    // add product to cart
-    $scope.addToCart = function (id)
-    {
-        console.log(id);
-        $scope.id = id;
-        for (product in $scope.products)
-        {
-            if($scope.products[product].id == $scope.id)
-            {
-                selectedItem = $scope.products[product];
-                itemTotal = selectedItem.price * $scope.quantity;
-                myCart.push({product: selectedItem, quantity: $scope.quantity, total: itemTotal});
-            }
-        }
-    };
-}
-
 angular.module('app').factory('CartItemsFactory', function () {
     var items = [];
 
@@ -120,27 +95,40 @@ angular.module('app').factory('CartItemsFactory', function () {
 });
 
 // cart controller
-angular.module('app').controller('CartController', function ($scope, CartItemsFactory, ProductsFactory) {
+function CartController ($scope, CartItemsFactory, ProductsFactory) {
+    $scope.items = CartItemsFactory.items;
     $scope.products = ProductsFactory.query({});
     $scope.totalItems = 0;
-    // cart template data
-    $scope.items = CartItemsFactory.items;
-    var cartTotal = 0;
-    var cartItemstotal = 0;
+    $scope.quantity = 1;
+    var itemTotal = 0;
+    var selectedItem = {};
 
+    // add product to cart
+    $scope.addToCart = function (id)
+    {
+        $scope.id = id;
+        for (product in $scope.products)
+        {
+            if($scope.products[product].id == $scope.id)
+            {
+                selectedItem = $scope.products[product];
+                itemTotal = selectedItem.price * $scope.quantity;
+                $scope.items.push({product: selectedItem, quantity: $scope.quantity, total: itemTotal});
+            }
+        }
+    };
+
+    // cart template data
+    var cartTotal = 0;
     for (item in $scope.items)
     {
         cartTotal = cartTotal += $scope.items[item].total;
         $scope.totalItems = $scope.totalItems + $scope.items[item].quantity;
-        console.log($scope.totalItems);
-
-
     }
+    // Order Total amount to pay
     $scope.cartTotal = cartTotal;
 
-
-
-});
+}
 
 /**
  * Created by janko on 08/11/2016.
