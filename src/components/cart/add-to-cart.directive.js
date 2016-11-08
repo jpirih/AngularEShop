@@ -21,6 +21,7 @@ function addToCartController($scope, ProductsFactory, CartItemsFactory) {
     // add product to cart
     $scope.addToCart = function (id)
     {
+        console.log(id);
         $scope.id = id;
         for (product in $scope.products)
         {

@@ -62,21 +62,14 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state('categoryProducts', {
         url:'/categories/:categoryId/products',
         templateUrl: 'templates/category-products.template.html',
-        controller: function ($scope, $stateParams, CategoryProductsFactory, CategoriesFactory)
-        {
-            $scope.loading = true;
-            $scope.categoryItems = CategoryProductsFactory.query({id: $stateParams.categoryId}, function (success) {
-                $scope.loading = false;
-            });
-
-
-        }
+        controller: CategoriesController
     });
 
     $stateProvider.state('orderComplete', {
         url: '/cart/order/order-complete',
         params: {data: null},
-        templateUrl: '/templates/order-complete.template.html'
+        templateUrl: '/templates/order-complete.template.html',
+        controller: OrderController
     });
 
 
@@ -104,6 +97,7 @@ function addToCartController($scope, ProductsFactory, CartItemsFactory) {
     // add product to cart
     $scope.addToCart = function (id)
     {
+        console.log(id);
         $scope.id = id;
         for (product in $scope.products)
         {
@@ -148,19 +142,26 @@ angular.module('app').controller('CartController', function ($scope, CartItemsFa
 
 });
 
+/**
+ * Created by janko on 08/11/2016.
+ */
+function CategoriesController($scope, CategoriesFactory, $stateParams, CategoryProductsFactory) {
+    $scope.categories = CategoriesFactory.query({});
+
+    // category products loading Products sorted by category
+    $scope.loading = true;
+    $scope.categoryItems = CategoryProductsFactory.query({id: $stateParams.categoryId}, function (success) {
+        $scope.loading = false;
+    });
+}
 angular.module('app').directive('categoriesDirective', function () {
     return {
         restrict: 'E',
         scope: {},
         templateUrl: '/templates/categories-list.template.html',
-        controller: categoriesDirectiveController
+        controller: CategoriesController
     }
 });
-
-function categoriesDirectiveController($scope, CategoriesFactory) {
-    $scope.categories = CategoriesFactory.query({});
-
-}
 
 /**
  * Created by janko on 05/11/2016.
@@ -173,7 +174,17 @@ angular.module('app').factory('CategoryProductsFactory', function ($resource) {
     return $resource('http://smartninja.betoo.si/api/eshop/categories/:id/products');
 });
 
-angular.module('app').controller('OrderController', function ($scope, CartItemsFactory, OrdersFactory, $state, $stateParams) {
+/**
+ * Created by janko on 29/10/2016.
+ */
+angular.module('app').directive('homeDirective', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '/templates/home.template.html'
+    };
+});
+
+function OrderController ($scope, CartItemsFactory, OrdersFactory, $state, $stateParams) {
     // form fields
     $scope.firstName = '';
     $scope.lastName = '';
@@ -207,40 +218,32 @@ angular.module('app').controller('OrderController', function ($scope, CartItemsF
             country: country,
             products: products
         });
-
+        // save order to api server
         newOrder.$save(function (response) {
-
+            // get saving order response message
             $scope.msg = {msg: response.status};
             $state.go('orderComplete', {data: $scope.msg});
             console.log($scope.msg);
         });
     };
-
+    // order success message
     $scope.resData = $state.params.data;
 
 
 
-});
+}
 
 angular.module('app').directive('orderDirective', function () {
     return {
         restrict: 'E',
-        templateUrl: '/templates/order-form.template.html'
+        scope: {},
+        templateUrl: '/templates/order-form.template.html',
+        controller: OrderController
     };
 });
 
 angular.module('app').factory('OrdersFactory', function ($resource) {
    return $resource('http://smartninja.betoo.si/api/eshop/orders');
-});
-
-/**
- * Created by janko on 29/10/2016.
- */
-angular.module('app').directive('homeDirective', function () {
-    return {
-        restrict: 'E',
-        templateUrl: '/templates/home.template.html'
-    };
 });
 
 angular.module('app').controller('ProductDetailsController', function ($scope, ProductsFactory, $stateParams) {
@@ -331,23 +334,12 @@ angular.module('app').controller('UsersController', function($scope){
 	
 });
 
-angular.module('app').controller('NavbarCollapseController', function($scope){
-   $scope.isNavCollapsed = true;
-  $scope.isCollapsed = false; 
-});
-/**
- * Created by janko on 28/10/2016.
- */
-angular.module('app').directive('navigationDirective', function () {
-    return{
-        restrict: 'E',
-        scope: true,
-        templateUrl: '/templates/navigation-template.html'
-    };
-});
+function MainNavigationController($scope,$http, ProductsFactory, $state, CartItemsFactory) {
+    // navbar collapse
+    $scope.isNavCollapsed = true;
+    $scope.isCollapsed = false;
 
-
-angular.module('app').controller('ProductSearchController', function($scope, $http, ProductsFactory, $state){
+    // navbar product search
     $scope.selected = "";
     $scope.products = ProductsFactory.query({});
     $scope.getItems = function (query) {
@@ -357,9 +349,22 @@ angular.module('app').controller('ProductSearchController', function($scope, $ht
     };
 
     $scope.getProductDetails = function (product) {
-
-        $scope.product = ProductsFactory.get({productId: product.id});
         $state.go('productDetails', {productId: product.id});
+    };
 
-    }
+    // navbar cart button
+    $scope.items = CartItemsFactory.items;
+}
+
+/**
+ * Created by janko on 28/10/2016.
+ */
+angular.module('app').directive('navigationDirective', function () {
+    return{
+        restrict: 'E',
+        scope: true,
+        templateUrl: '/templates/navigation-template.html',
+        controller: MainNavigationController
+    };
 });
+

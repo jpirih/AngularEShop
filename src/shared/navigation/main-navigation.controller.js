@@ -1,4 +1,9 @@
-angular.module('app').controller('ProductSearchController', function($scope, $http, ProductsFactory, $state){
+function MainNavigationController($scope,$http, ProductsFactory, $state, CartItemsFactory) {
+    // navbar collapse
+    $scope.isNavCollapsed = true;
+    $scope.isCollapsed = false;
+
+    // navbar product search
     $scope.selected = "";
     $scope.products = ProductsFactory.query({});
     $scope.getItems = function (query) {
@@ -8,9 +13,9 @@ angular.module('app').controller('ProductSearchController', function($scope, $ht
     };
 
     $scope.getProductDetails = function (product) {
-
-        $scope.product = ProductsFactory.get({productId: product.id});
         $state.go('productDetails', {productId: product.id});
+    };
 
-    }
-});
+    // navbar cart button
+    $scope.items = CartItemsFactory.items;
+}

@@ -27,7 +27,11 @@
             </tbody>
         </table>
         <div class="well pull-right">
-            <h3>Skupaj {{ cartTotal | number: 2 }} EUR</h3>
+            <p>
+                <span class="text-bold">Število izdelkov: </span> {{ totalItems }}
+            </p>
+
+            <h3>Za plačilo {{ cartTotal | number: 2 }} EUR</h3>
         </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-angular.module('app').controller('OrderController', function ($scope, CartItemsFactory, OrdersFactory, $state, $stateParams) {
+function OrderController ($scope, CartItemsFactory, OrdersFactory, $state, $stateParams) {
     // form fields
     $scope.firstName = '';
     $scope.lastName = '';
@@ -32,17 +32,17 @@ angular.module('app').controller('OrderController', function ($scope, CartItemsF
             country: country,
             products: products
         });
-
+        // save order to api server
         newOrder.$save(function (response) {
-
+            // get saving order response message
             $scope.msg = {msg: response.status};
             $state.go('orderComplete', {data: $scope.msg});
             console.log($scope.msg);
         });
     };
-
+    // order success message
     $scope.resData = $state.params.data;
 
 
 
-});
+}

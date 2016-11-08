@@ -3,11 +3,6 @@ angular.module('app').directive('categoriesDirective', function () {
         restrict: 'E',
         scope: {},
         templateUrl: '/templates/categories-list.template.html',
-        controller: categoriesDirectiveController
+        controller: CategoriesController
     }
 });
-
-function categoriesDirectiveController($scope, CategoriesFactory) {
-    $scope.categories = CategoriesFactory.query({});
-
-}

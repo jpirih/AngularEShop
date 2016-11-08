@@ -5,7 +5,8 @@ angular.module('app').directive('navigationDirective', function () {
     return{
         restrict: 'E',
         scope: true,
-        templateUrl: '/templates/navigation-template.html'
+        templateUrl: '/templates/navigation-template.html',
+        controller: MainNavigationController
     };
 });
 
