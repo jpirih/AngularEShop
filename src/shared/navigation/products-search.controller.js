@@ -10,8 +10,7 @@ angular.module('app').controller('ProductSearchController', function($scope, $ht
     $scope.getProductDetails = function (product) {
 
         $scope.product = ProductsFactory.get({productId: product.id});
-        console.log($scope.product.id);
-        $state.go('productDetails', {productId: $scope.product.id});
+        $state.go('productDetails', {productId: product.id});
 
     }
 });

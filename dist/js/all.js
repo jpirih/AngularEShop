@@ -173,16 +173,6 @@ angular.module('app').factory('CategoryProductsFactory', function ($resource) {
     return $resource('http://smartninja.betoo.si/api/eshop/categories/:id/products');
 });
 
-/**
- * Created by janko on 29/10/2016.
- */
-angular.module('app').directive('homeDirective', function () {
-    return {
-        restrict: 'E',
-        templateUrl: '/templates/home.template.html'
-    };
-});
-
 angular.module('app').controller('OrderController', function ($scope, CartItemsFactory, OrdersFactory, $state, $stateParams) {
     // form fields
     $scope.firstName = '';
@@ -241,6 +231,16 @@ angular.module('app').directive('orderDirective', function () {
 
 angular.module('app').factory('OrdersFactory', function ($resource) {
    return $resource('http://smartninja.betoo.si/api/eshop/orders');
+});
+
+/**
+ * Created by janko on 29/10/2016.
+ */
+angular.module('app').directive('homeDirective', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '/templates/home.template.html'
+    };
 });
 
 angular.module('app').controller('ProductDetailsController', function ($scope, ProductsFactory, $stateParams) {
@@ -314,7 +314,9 @@ angular.module('app').factory('ProductsFactory', function($resource, $cacheFacto
 	 },
 
 	 ];*/
-	return $resource('http://smartninja.betoo.si/api/eshop/products/:id');
+	return $resource('http://smartninja.betoo.si/api/eshop/products/:id', {}, {
+		query: {isArray: true},
+	});
 });
 /**
  * Created by janko on 26/10/2016.
@@ -357,8 +359,7 @@ angular.module('app').controller('ProductSearchController', function($scope, $ht
     $scope.getProductDetails = function (product) {
 
         $scope.product = ProductsFactory.get({productId: product.id});
-        console.log($scope.product.id);
-        $state.go('productDetails', {productId: $scope.product.id});
+        $state.go('productDetails', {productId: product.id});
 
     }
 });
