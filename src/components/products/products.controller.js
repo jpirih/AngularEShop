@@ -1,4 +1,4 @@
-angular.module('app').controller('ProductsController', function ($stateParams, $scope, ProductsFactory) {
+function ProductsController ($scope, ProductsFactory) {
     $scope.loading = true;
     // search for product by name
     $scope.$watch('query', function (newValue) {
@@ -9,4 +9,4 @@ angular.module('app').controller('ProductsController', function ($stateParams, $
         $scope.loading = false;
     });
 
-});
+}

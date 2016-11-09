@@ -42,12 +42,14 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
     // product details
     $stateProvider.state('productDetails', {
         url: '/products/:productId',
-        templateUrl: '/templates/product-details.template.html'
+        templateUrl: '/templates/product-details.template.html',
+        controller: ProductDetailsController
     });
     // all products list
     $stateProvider.state('products', {
         url: '/products',
-        templateUrl: '/templates/products.template.html'
+        templateUrl: '/templates/products.template.html',
+        controller: ProductsController
     });
     // my cart
     $stateProvider.state('cart', {

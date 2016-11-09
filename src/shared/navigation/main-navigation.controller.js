@@ -1,4 +1,4 @@
-function MainNavigationController($scope,$http, ProductsFactory, $state, CartItemsFactory) {
+function MainNavigationController($scope,$http, ProductsFactory, $state, CartItemsFactory, CategoriesFactory) {
     // navbar collapse
     $scope.isNavCollapsed = true;
     $scope.isCollapsed = false;
@@ -18,4 +18,7 @@ function MainNavigationController($scope,$http, ProductsFactory, $state, CartIte
 
     // navbar cart button
     $scope.items = CartItemsFactory.items;
+
+    // categories for dropdown menu
+    $scope.categories = CategoriesFactory.query({});
 }

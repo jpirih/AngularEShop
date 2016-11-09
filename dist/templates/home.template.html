@@ -1,7 +1,21 @@
 <div class="row">
-    <div class="col-sm-6 col-sm-offset-3">
-        <h1 class="page-header">Dobrodošli moji mali trgovini</h1>
-        <p>Izbirate lahko le med najboljšimi izdelki</p>
+    <div class="col-sm-12">
+        <div class="info-box">
+
+            <div uib-carousel active="active" interval="interval" no-wrap="noWrapSlides">
+                <div uib-slide ng-repeat="slide in productsOnSale " index="$index">
+                    <img ng-src="{{slide.image}}" style="margin:auto;">
+                    <div class="carousel-caption">
+                        <h4>{{slide.name}}</h4>
+                        <p>Izdelek v Akciji</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
+<div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+        <h1 class="page-header">Dobrodošli v moji mali Trgovini</h1>
+    </div>
+</div>
