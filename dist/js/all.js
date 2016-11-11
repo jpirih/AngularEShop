@@ -1,5 +1,11 @@
-angular.module('app', ['ui.router', 'ngResource', 'ui.bootstrap']);
+angular.module('app', ['ui.router', 'ngResource', 'ui.bootstrap', 'angular-locker']);
 
+angular.module('app').config(function(lockerProvider){
+   lockerProvider.defaults({
+       driver: 'local',
+       mespace: 'app'
+   }); 
+});
 /**
  * Created by janko on 28/10/2016.
  */
@@ -88,8 +94,8 @@ angular.module('app').directive('addToCartDirective', function () {
         controller: CartController
     }
 });
-angular.module('app').factory('CartItemsFactory', function () {
-    var items = [];
+angular.module('app').factory('CartItemsFactory', function (locker) {
+    var items = locker.get('myCart', [])
 
     return {
         items: items
@@ -97,13 +103,16 @@ angular.module('app').factory('CartItemsFactory', function () {
 });
 
 // cart controller
-function CartController ($scope, CartItemsFactory, ProductsFactory) {
+function CartController ($scope, CartItemsFactory, ProductsFactory, locker) {
     $scope.items = CartItemsFactory.items;
     $scope.products = ProductsFactory.query({});
     $scope.totalItems = 0;
     $scope.quantity = 1;
     var itemTotal = 0;
     var selectedItem = {};
+    
+    
+    
 
     // add product to cart
     $scope.addToCart = function (id)
@@ -118,7 +127,9 @@ function CartController ($scope, CartItemsFactory, ProductsFactory) {
                 $scope.items.push({product: selectedItem, quantity: $scope.quantity, total: itemTotal});
             }
         }
+        locker.put('myCart', $scope.items)
     };
+    
 
     // cart template data
     var cartTotal = 0;
@@ -131,6 +142,40 @@ function CartController ($scope, CartItemsFactory, ProductsFactory) {
     $scope.cartTotal = cartTotal;
 
 }
+
+/**
+ * Created by janko on 08/11/2016.
+ */
+function CategoriesController($scope, CategoriesFactory, $stateParams, CategoryProductsFactory, $state) {
+    $scope.categories = CategoriesFactory.query({});
+
+    // category products loading Products sorted by category
+    $scope.loading = true;
+    $scope.categoryItems = CategoryProductsFactory.query({id: $stateParams.categoryId}, function (success) {
+        $scope.loading = false;
+    });
+
+    $scope.thisCategory = $state.params.categoryData;
+}
+angular.module('app').directive('categoriesDirective', function () {
+    return {
+        restrict: 'E',
+        scope: {},
+        templateUrl: '/templates/categories-list.template.html',
+        controller: CategoriesController
+    }
+});
+
+/**
+ * Created by janko on 05/11/2016.
+ */
+angular.module('app').factory('CategoriesFactory', function ($resource, $cacheFactory) {
+   return $resource('http://smartninja.betoo.si/api/eshop/categories');
+
+});
+angular.module('app').factory('CategoryProductsFactory', function ($resource) {
+    return $resource('http://smartninja.betoo.si/api/eshop/categories/:id/products');
+});
 
 /**
  * Created by janko on 09/11/2016.
@@ -293,40 +338,6 @@ angular.module('app').factory('ProductsFactory', function($resource, $cacheFacto
 		query: {isArray: true}
 	});
 });
-/**
- * Created by janko on 08/11/2016.
- */
-function CategoriesController($scope, CategoriesFactory, $stateParams, CategoryProductsFactory, $state) {
-    $scope.categories = CategoriesFactory.query({});
-
-    // category products loading Products sorted by category
-    $scope.loading = true;
-    $scope.categoryItems = CategoryProductsFactory.query({id: $stateParams.categoryId}, function (success) {
-        $scope.loading = false;
-    });
-
-    $scope.thisCategory = $state.params.categoryData;
-}
-angular.module('app').directive('categoriesDirective', function () {
-    return {
-        restrict: 'E',
-        scope: {},
-        templateUrl: '/templates/categories-list.template.html',
-        controller: CategoriesController
-    }
-});
-
-/**
- * Created by janko on 05/11/2016.
- */
-angular.module('app').factory('CategoriesFactory', function ($resource, $cacheFactory) {
-   return $resource('http://smartninja.betoo.si/api/eshop/categories');
-
-});
-angular.module('app').factory('CategoryProductsFactory', function ($resource) {
-    return $resource('http://smartninja.betoo.si/api/eshop/categories/:id/products');
-});
-
 /**
  * Created by janko on 26/10/2016.
  */

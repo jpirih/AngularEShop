@@ -1,11 +1,14 @@
 // cart controller
-function CartController ($scope, CartItemsFactory, ProductsFactory) {
+function CartController ($scope, CartItemsFactory, ProductsFactory, locker) {
     $scope.items = CartItemsFactory.items;
     $scope.products = ProductsFactory.query({});
     $scope.totalItems = 0;
     $scope.quantity = 1;
     var itemTotal = 0;
     var selectedItem = {};
+    
+    
+    
 
     // add product to cart
     $scope.addToCart = function (id)
@@ -20,7 +23,9 @@ function CartController ($scope, CartItemsFactory, ProductsFactory) {
                 $scope.items.push({product: selectedItem, quantity: $scope.quantity, total: itemTotal});
             }
         }
+        locker.put('myCart', $scope.items)
     };
+    
 
     // cart template data
     var cartTotal = 0;

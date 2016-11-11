@@ -55,6 +55,10 @@ gulp.task('libs', function () {
     gulp.src('./bower_components/angular-bootstrap/ui-bootstrap-tpls.js')
         .pipe(gulp.dest('./dist/libs/angular'))
         .pipe(notify('Angular bootstrap included'));
+    
+    gulp.src('./bower_components/angular-locker/dist/angular-locker.min.js')
+        .pipe(gulp.dest('./dist/libs/angular'))
+        .pipe(notify('Angular locker included'));
 
 	gulp.src('./bower_components/jquery/dist/jquery.js')
 		.pipe(gulp.dest('./dist/libs/jquery'))
