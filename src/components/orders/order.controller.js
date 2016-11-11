@@ -1,26 +1,27 @@
-function OrderController ($scope, CartItemsFactory, OrdersFactory, $state, $stateParams) {
+function OrderController (CartItemsFactory, OrdersFactory, $state, locker) {
+    vm = this;
     // form fields
-    $scope.firstName = '';
-    $scope.lastName = '';
-    $scope.customerEmail = '';
-    $scope.address = '';
-    $scope.zipCode = null;
-    $scope.city = '';
-    $scope.country = '';
-    $scope.products = CartItemsFactory.items;
-    $scope.orders = OrdersFactory.orders;
+    vm.firstName = '';
+    vm.lastName = '';
+    vm.customerEmail = '';
+    vm.address = '';
+    vm.zipCode = null;
+    vm.city = '';
+    vm.country = '';
+    vm.products = CartItemsFactory.items;
+    vm.orders = OrdersFactory.orders;
     var products = [];
 
 
-    for (item in $scope.products)
+    for (item in vm.products)
     {
         products.push({
-            id: $scope.products[item].product.id,
-            quantity: $scope.products[item].quantity
+            id: vm.products[item].product.id,
+            quantity: vm.products[item].quantity
         });
     }
     // place order
-    $scope.orderUP = function (firstName, lastName, customerEmail, address, zipCode, city, country)
+    vm.orderUP = function (firstName, lastName, customerEmail, address, zipCode, city, country)
     {
         var newOrder = new OrdersFactory({
             firstName: firstName,
@@ -35,13 +36,13 @@ function OrderController ($scope, CartItemsFactory, OrdersFactory, $state, $stat
         // save order to api server
         newOrder.$save(function (response) {
             // get saving order response message
-            $scope.msg = {msg: response.status};
-            $state.go('orderComplete', {data: $scope.msg});
-            console.log($scope.msg);
+            vm.msg = {msg: response.status};
+            $state.go('orderComplete', {data: vm.msg});
+            console.log(vm.msg);
         });
     };
     // order success message
-    $scope.resData = $state.params.data;
+    vm.resData = $state.params.data;
 
 
 

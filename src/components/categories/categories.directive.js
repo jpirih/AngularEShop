@@ -3,6 +3,7 @@ angular.module('app').directive('categoriesDirective', function () {
         restrict: 'E',
         scope: {},
         templateUrl: '/templates/categories-list.template.html',
+        controllerAs: 'CategoriesCtrl',
         controller: CategoriesController
     }
 });

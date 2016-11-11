@@ -6,6 +6,7 @@ angular.module('app').directive('navigationDirective', function () {
         restrict: 'E',
         scope: true,
         templateUrl: '/templates/navigation-template.html',
+        controllerAs: 'MainNavCtrl',
         controller: MainNavigationController
     };
 });

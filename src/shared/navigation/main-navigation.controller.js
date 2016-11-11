@@ -1,24 +1,25 @@
-function MainNavigationController($scope,$http, ProductsFactory, $state, CartItemsFactory, CategoriesFactory) {
+function MainNavigationController($http, ProductsFactory, $state, CartItemsFactory, CategoriesFactory) {
+    vm = this;
     // navbar collapse
-    $scope.isNavCollapsed = true;
-    $scope.isCollapsed = false;
+    vm.isNavCollapsed = true;
+    vm.isCollapsed = false;
 
     // navbar product search
-    $scope.selected = "";
-    $scope.products = ProductsFactory.query({});
-    $scope.getItems = function (query) {
+    vm.selected = "";
+    vm.products = ProductsFactory.query({});
+    vm.getItems = function (query) {
         return $http.get('http://smartninja.betoo.si/api/eshop/products', {params: {query: query}}).then(function (response) {
             return response.data;
         });
     };
 
-    $scope.getProductDetails = function (product) {
+    vm.getProductDetails = function (product) {
         $state.go('productDetails', {productId: product.id});
     };
 
     // navbar cart button
-    $scope.items = CartItemsFactory.items;
+    vm.items = CartItemsFactory.items;
 
     // categories for dropdown menu
-    $scope.categories = CategoriesFactory.query({});
+    vm.categories = CategoriesFactory.query({});
 }

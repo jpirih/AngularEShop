@@ -6,38 +6,38 @@
         <div class="form-group">
             <label for="firstName" class="control-label col-sm-2">Ime</label>
             <div class="col-sm-4">
-                <input type="text" name="firstName" id="firstName" data-ng-model="firstName" class="form-control" data-ng-required="true">
+                <input type="text" name="firstName" id="firstName" data-ng-model="OrderCtrl.firstName" class="form-control" data-ng-required="true">
             </div>
             <label for="lastName" class="control-label col-sm-2">Priimek</label>
             <div class="col-sm-4">
-                <input type="text" name="lastName" id="lastName" data-ng-model="lastName" class="form-control" data-ng-required="true">
+                <input type="text" name="lastName" id="lastName" data-ng-model="OrderCtrl.lastName" class="form-control" data-ng-required="true">
             </div>
         </div>
         <div class="form-group">
             <label for="customerEmail" class="control-label col-sm-2">E-mail</label>
             <div class="col-sm-10">
-                <input type="email" name="customerEmail" id="customerEmail" data-ng-model="customerEmail" class="form-control" data-ng-required="true">
+                <input type="email" name="customerEmail" id="customerEmail" data-ng-model="OrderCtrl.customerEmail" class="form-control" data-ng-required="true">
             </div>
         </div>
         <div class="form-group"><label for="address" class="control-label col-sm-2">Naslov</label>
             <div class="col-sm-10">
-                <input type="text" name="address" id="address" data-ng-model="address" class="form-control" data-ng-required="true">
+                <input type="text" name="address" id="address" data-ng-model="OrderCtrl.address" class="form-control" data-ng-required="true">
             </div>
         </div>
         <div class="form-group">
             <label for="zipCode" class="control-label col-sm-2">Poštna Št.</label>
             <div class="col-sm-4">
-                <input type="text" name="zipCode" id="zipCode" data-ng-model="zipCode" class="form-control" data-ng-required="true">
+                <input type="text" name="zipCode" id="zipCode" data-ng-model="OrderCtrl.zipCode" class="form-control" data-ng-required="true">
             </div>
             <label for="city" class="control-label col-sm-2">Kraj</label>
             <div class="col-sm-4">
-                <input type="text" name="city" id="city" data-ng-model="city" class="form-control" data-ng-required="true">
+                <input type="text" name="city" id="city" data-ng-model="OrderCtrl.city" class="form-control" data-ng-required="true">
             </div>
         </div>
         <div class="form-group">
             <label for="country" class="control-label col-sm-2">Država</label>
             <div class="col-sm-10">
-                <input type="text" name="country" id="country" data-ng-model="country" class="form-control" data-ng-required="true">
+                <input type="text" name="country" id="country" data-ng-model="OrderCtrl.country" class="form-control" data-ng-required="true">
             </div>
         </div>
         <div class="form-group">
@@ -46,7 +46,7 @@
                     <span class="glyphicon glyphicon-refresh"></span>
                     Izprazni obrazec
                 </button>
-                <button class="btn btn-success" data-ng-disabled="orderForm.$invalid" data-ng-click="orderUP(firstName, lastName, customerEmail, address, zipCode, city, country)">
+                <button class="btn btn-success" data-ng-disabled="orderForm.$invalid" data-ng-click="OrderCtrl.orderUP(OrderCtrl.firstName, OrderCtrl.lastName, OrderCtrl.customerEmail, OrderCtrl.address, OrderCtrl.zipCode, OrderCtrl.city, OrderCtrl.country)">
                     Oddaj Naročilo
                 </button>
             </div>

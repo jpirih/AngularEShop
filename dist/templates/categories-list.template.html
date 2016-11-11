@@ -1,3 +1,3 @@
 <ul class="nav nav-tabs">
-    <li data-ng-repeat="category in categories" role="presentation"><a ui-sref="categoryProducts({categoryId: category.id, categoryData: {name:category.category}})">{{ category.category }}</a></li>
+    <li data-ng-repeat="category in CategoriesCtrl.categories" role="presentation"><a ui-sref="categoryProducts({categoryId: category.id, categoryData: {name:category.category}})">{{ category.category }}</a></li>
 </ul>

@@ -3,6 +3,7 @@ angular.module('app').directive('orderDirective', function () {
         restrict: 'E',
         scope: {},
         templateUrl: '/templates/order-form.template.html',
+        controllerAs: 'OrderCtrl',
         controller: OrderController
     };
 });

@@ -55,6 +55,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state('cart', {
         url: '/cart',
         templateUrl: '/templates/cart.template.html',
+        controllerAs: 'CartCtrl',
         controller: CartController
     });
 
@@ -63,6 +64,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
         url:'/categories/:categoryId/products',
         params: {categoryData: null},
         templateUrl: 'templates/category-products.template.html',
+        controllerAs: 'CategoriesCtrl',
         controller: CategoriesController
     });
 
@@ -70,6 +72,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
         url: '/cart/order/order-complete',
         params: {data: null},
         templateUrl: '/templates/order-complete.template.html',
+        controllerAs: 'OrderCtrl',
         controller: OrderController
     });
 

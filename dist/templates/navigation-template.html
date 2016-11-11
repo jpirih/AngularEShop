@@ -3,7 +3,7 @@
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" ng-click="isNavCollapsed = !isNavCollapsed">
+            <button type="button" class="navbar-toggle" ng-click="MainNavCtrl.isNavCollapsed = !MainNavCtrl.isNavCollapsed">
 
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -13,27 +13,27 @@
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" uib-collapse="isNavCollapsed">
+        <div class="collapse navbar-collapse" uib-collapse="MainNavCtrl.isNavCollapsed">
             <ul class="nav navbar-nav">
                 <li><a ui-sref="about">About E-shop <span class="sr-only">(current)</span></a></li>
                 <li><a ui-sref="terms">Terms of use</a></li>
                 <li uib-dropdown on-toggle="toggled(open)">
                     <a href="#" id="categories-dropdown" uib-dropdown-toggle role="button" aria-haspopup="true" aria-expanded="false">Ponudba <span class="caret"></span></a>
                     <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="categories-dropdown">
-                        <li ng-repeat="category in categories"><a ui-sref="categoryProducts({categoryId: category.id, categoryData: {name: category.category}})">{{ category.category }}</a></li>
+                        <li ng-repeat="category in MainNavCtrl.categories"><a ui-sref="categoryProducts({categoryId: category.id, categoryData: {name: category.category}})">{{ category.category }}</a></li>
                     </ul>
                 </li>
             </ul>
             <form class="navbar-form navbar-left">
                 <div class="form-group">
-                    <input type="text" data-ng-model="selected" class="form-control"  uib-typeahead="item as item.name  for item in getItems($viewValue)" placeholder="Search">
+                    <input type="text" data-ng-model="MainNavCtrl.selected" class="form-control"  uib-typeahead="item as item.name  for item in MainNavCtrl.getItems($viewValue)" placeholder="Search">
                 </div>
-                <button  class="btn btn-success" data-ng-click="getProductDetails(selected)">Go</button>
+                <button  class="btn btn-success" data-ng-click="MainNavCtrl.getProductDetails(MainNavCtrl.selected)">Go</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
                 <li><a ui-sref="products">Products</a></li>
                 <li class="dropdown">
-                    <a ui-sref="cart"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Košarica ({{ items.length }}) <span class="caret"></span></a>
+                    <a ui-sref="cart"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Košarica ({{ MainNavCtrl.items.length }}) <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">Action</a></li>
                         <li><a href="#">Another action</a></li>

@@ -4,7 +4,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-6"  data-ng-if="items.length > 0">
+    <div class="col-sm-6"  data-ng-if="CartCtrl.items.length > 0">
         <order-directive></order-directive>
     </div>
     <div class="col-sm-6 ">
@@ -18,7 +18,7 @@
                 </tr>
             </thead>
             <tbody class="bg-info">
-                <tr data-ng-repeat="item in items">
+                <tr data-ng-repeat="item in CartCtrl.items">
                     <td><a ui-sref="productDetails({productId: item.product.id})">{{ item.product.name }}</a></td>
                     <td>{{ item.quantity }}</td>
                     <td>{{ item.product.price | number: 2 }}</td>
@@ -28,10 +28,10 @@
         </table>
         <div class="well pull-right">
             <p>
-                <span class="text-bold">Število izdelkov: </span> {{ totalItems }}
+                <span class="text-bold">Število izdelkov: </span> {{ CartCtrl.totalItems }}
             </p>
 
-            <h3>Za plačilo {{ cartTotal | number: 2 }} EUR</h3>
+            <h3>Za plačilo {{ CartCtrl.cartTotal | number: 2 }} EUR</h3>
         </div>
     </div>
 </div>
