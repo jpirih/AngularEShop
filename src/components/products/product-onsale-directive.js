@@ -4,15 +4,7 @@ angular.module('app').directive('onSaleDirective', function ()
 		restrict: 'E',
 		scope: true,
 		templateUrl: '/templates/on-sale.template.html',
+		controllerAs: 'OnSaleCtrl',
 		controller: OnSaleProductsController
 	}
 });
-
-// productsFactory controller
-function OnSaleProductsController ($scope, ProductsFactory) {
-	$scope.loading = true;
-	$scope.products = ProductsFactory.query({onlyOnSale: true}, function (success) {
-		$scope.loading = false;
-	});
-
-}

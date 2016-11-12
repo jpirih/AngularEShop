@@ -3,8 +3,18 @@
         <h1 class="page-header">Moja Košarica</h1>
     </div>
 </div>
-<div class="row">
-    <div class="col-sm-6"  data-ng-if="CartCtrl.items.length > 0">
+<div class="row" data-ng-if="CartCtrl.items.length == 0">
+    <div class="col-sm-6 col-sm-offset-3">
+        <div class="alert alert-info">
+            <p>
+                <span class="glyphicon glyphicon-info-sign"></span>
+                Košarica je prazna
+            </p>
+        </div>
+    </div>
+</div>
+<div class="row" data-ng-if="CartCtrl.items.length > 0">
+    <div class="col-sm-6">
         <order-directive></order-directive>
     </div>
     <div class="col-sm-6 ">
@@ -26,6 +36,12 @@
                 </tr>
             </tbody>
         </table>
+        <div class="pull-left">
+            <button class="btn btn-danger" data-ng-click="CartCtrl.emptyCart()">
+                <span class="glyphicon glyphicon-trash"></span>
+                Izprazni Košarico
+            </button>
+        </div>
         <div class="well pull-right">
             <p>
                 <span class="text-bold">Število izdelkov: </span> {{ CartCtrl.totalItems }}

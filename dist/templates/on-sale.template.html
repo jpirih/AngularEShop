@@ -11,7 +11,7 @@
             Loading...
         </div>
     </div>
-    <div class="col-sm-6 col-md-4" data-ng-repeat="product in products">
+    <div class="col-sm-6 col-md-4" data-ng-repeat="product in OnSaleCtrl.products">
         <div class="thumbnail">
             <img data-ng-src="{{ product.image }}">
             <div class="caption">
@@ -24,7 +24,7 @@
             </div>
             <br>
             <div class="well">
-                <add-to-cart-directive id="product.id"></add-to-cart-directive>
+                <add-to-cart-directive id="product"></add-to-cart-directive>
             </div>
         </div>
     </div>

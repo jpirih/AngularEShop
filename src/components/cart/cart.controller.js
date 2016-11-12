@@ -1,29 +1,19 @@
 // cart controller
-function CartController (CartItemsFactory, ProductsFactory, locker) {
+function CartController ($scope, CartItemsFactory, ProductsFactory, locker, $state) {
     vm = this;
     vm.items = CartItemsFactory.items;
     vm.products = ProductsFactory.query({});
     vm.totalItems = 0;
-    vm.quantity = 1;
+    $scope.quantity = 1;
     var itemTotal = 0;
     var selectedItem = {};
-    
-    
-    
 
     // add product to cart
-    vm.addToCart = function (id)
+    vm.addToCart = function (product)
     {
-        vm.id = id;
-        for (product in vm.products)
-        {
-            if(vm.products[product].id == vm.id)
-            {
-                selectedItem = vm.products[product];
-                itemTotal = selectedItem.price * vm.quantity;
-                vm.items.push({product: selectedItem, quantity: vm.quantity, total: itemTotal});
-            }
-        }
+        selectedItem = product;
+        itemTotal = $scope.quantity * product.price;
+        vm.items.push({product: selectedItem, quantity: $scope.quantity, total: itemTotal});
         locker.put('myCart', vm.items)
     };
     
@@ -37,5 +27,12 @@ function CartController (CartItemsFactory, ProductsFactory, locker) {
     }
     // Order Total amount to pay
     vm.cartTotal = cartTotal;
+
+    // empty my cart - delete all products from the cart
+    vm.emptyCart = function () {
+        locker.forget('myCart');
+        return window.location.reload();
+    };
+
 
 }

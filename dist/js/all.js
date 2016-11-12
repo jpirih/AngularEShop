@@ -51,12 +51,14 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state('productDetails', {
         url: '/products/:productId',
         templateUrl: '/templates/product-details.template.html',
+        controllerAs: 'ProductDetailCtrl',
         controller: ProductDetailsController
     });
     // all products list
     $stateProvider.state('products', {
         url: '/products',
         templateUrl: '/templates/products.template.html',
+        controllerAS: 'ProductsCtrl',
         controller: ProductsController
     });
     // my cart
@@ -86,68 +88,6 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
 
 
 });
-/**
- * Created by janko on 04/11/2016.
- */
-angular.module('app').directive('addToCartDirective', function () {
-    return {
-        restrict: 'E',
-        scope: {id: '='},
-        templateUrl: '/templates/add-to-cart.template.html',
-        controllerAs: 'CartCtrl',
-        controller: CartController
-    }
-});
-angular.module('app').factory('CartItemsFactory', function (locker) {
-    var items = locker.get('myCart', []);
-
-    return {
-        items: items
-    };
-});
-
-// cart controller
-function CartController (CartItemsFactory, ProductsFactory, locker) {
-    vm = this;
-    vm.items = CartItemsFactory.items;
-    vm.products = ProductsFactory.query({});
-    vm.totalItems = 0;
-    vm.quantity = 1;
-    var itemTotal = 0;
-    var selectedItem = {};
-    
-    
-    
-
-    // add product to cart
-    vm.addToCart = function (id)
-    {
-        vm.id = id;
-        for (product in vm.products)
-        {
-            if(vm.products[product].id == vm.id)
-            {
-                selectedItem = vm.products[product];
-                itemTotal = selectedItem.price * vm.quantity;
-                vm.items.push({product: selectedItem, quantity: vm.quantity, total: itemTotal});
-            }
-        }
-        locker.put('myCart', vm.items)
-    };
-    
-
-    // cart template data
-    var cartTotal = 0;
-    for (item in vm.items)
-    {
-        cartTotal = cartTotal += vm.items[item].total;
-        vm.totalItems = vm.totalItems + vm.items[item].quantity;
-    }
-    // Order Total amount to pay
-    vm.cartTotal = cartTotal;
-
-}
-
 /**
  * Created by janko on 08/11/2016.
  */
@@ -186,6 +126,65 @@ angular.module('app').factory('CategoriesFactory', function ($resource, $cacheFa
 angular.module('app').factory('CategoryProductsFactory', function ($resource) {
     return $resource('http://smartninja.betoo.si/api/eshop/categories/:id/products');
 });
+
+/**
+ * Created by janko on 04/11/2016.
+ */
+angular.module('app').directive('addToCartDirective', function () {
+    return {
+        restrict: 'E',
+        scope: {id: '='},
+        templateUrl: '/templates/add-to-cart.template.html',
+        controllerAs: 'CartCtrl',
+        controller: CartController
+    }
+});
+angular.module('app').factory('CartItemsFactory', function (locker) {
+    var items = locker.get('myCart', []);
+
+    return {
+        items: items
+    };
+});
+
+// cart controller
+function CartController ($scope, CartItemsFactory, ProductsFactory, locker, $state) {
+    vm = this;
+    vm.items = CartItemsFactory.items;
+    vm.products = ProductsFactory.query({});
+    vm.totalItems = 0;
+    $scope.quantity = 1;
+    var itemTotal = 0;
+    var selectedItem = {};
+
+    // add product to cart
+    vm.addToCart = function (product)
+    {
+        selectedItem = product;
+        itemTotal = $scope.quantity * product.price;
+        vm.items.push({product: selectedItem, quantity: $scope.quantity, total: itemTotal});
+        locker.put('myCart', vm.items)
+    };
+    
+
+    // cart template data
+    var cartTotal = 0;
+    for (item in vm.items)
+    {
+        cartTotal = cartTotal += vm.items[item].total;
+        vm.totalItems = vm.totalItems + vm.items[item].quantity;
+    }
+    // Order Total amount to pay
+    vm.cartTotal = cartTotal;
+
+    // empty my cart - delete all products from the cart
+    vm.emptyCart = function () {
+        locker.forget('myCart');
+        return window.location.reload();
+    };
+
+
+}
 
 /**
  * Created by janko on 09/11/2016.
@@ -274,6 +273,88 @@ angular.module('app').factory('OrdersFactory', function ($resource) {
    return $resource('http://smartninja.betoo.si/api/eshop/orders');
 });
 
+ function ProductDetailsController(ProductsFactory, $stateParams) {
+     vm = this;
+    vm.product = ProductsFactory.get({id: $stateParams.productId});
+}
+
+angular.module('app').directive('onSaleDirective', function ()
+{
+	return {
+		restrict: 'E',
+		scope: true,
+		templateUrl: '/templates/on-sale.template.html',
+		controllerAs: 'OnSaleCtrl',
+		controller: OnSaleProductsController
+	}
+});
+
+/**
+ * Created by janko on 12/11/2016.
+ */
+// products on sale directive controller
+function OnSaleProductsController ($scope, ProductsFactory) {
+    vm = this;
+    $scope.loading = true;
+    vm.products = ProductsFactory.query({onlyOnSale: true}, function (success) {
+        $scope.loading = false;
+    });
+
+}
+function ProductsController ($scope, ProductsFactory) {
+    vm = this;
+    $scope.loading = true;
+    // search for product by name
+    $scope.$watch('query', function (newValue) {
+        $scope.products = ProductsFactory.query({query: newValue});
+    });
+    // list of all products /products
+    vm.products = ProductsFactory.query({}, function (success) {
+        $scope.loading = false;
+    });
+
+}
+angular.module('app').factory('ProductsFactory', function($resource, $cacheFactory) {
+	/*var products = [
+	 {
+	 id: 1,
+	 product_name: 'Kekec Pašteta',
+	 manufacturer:  'Osem d.o.o.',
+	 packingUnit: 'kos',
+	 nettQuantity: '75 gramov',
+	 price: 0.45,
+	 ean: '383000860420',
+	 description: "svinjsko mastno tkivo, voda, svinjska jetra, svinjskomeso, mlečna beljakovina, jedilna sol,dekstroza, začimbe,ojačevalec arome E 621, antioksidant E 300, barvilo E 120, konzervans E 250.",
+	 img: 'http://www.tuscc.si/cache/thumbs/53f199e7be0c845f10cc3ad6/600x600-c2/3830008604200a.jpg'
+	 },
+	 {
+	 id: 2,
+	 product_name: 'Testenine Barilla, špageti, polnozr., št.5, 500g',
+	 manufacturer:  'BARILLA ADRIATIK',
+	 packingUnit: 'kos',
+	 nettQuantity: '500 gramov',
+	 price: 1.18,
+	 ean: '807680952941',
+	 description: "Najboljši špageti na svetu",
+	 img: 'http://www.tuscc.si/cache/thumbs/53f199e7be0c845f10cc3ad6/600x600-c2/8076809529419-5.jpg'
+	 },
+	 {
+	 id: 3,
+	 product_name: 'Nutella, 3kg',
+	 manufacturer:  'MITTEL CO S.R.L. S.U',
+	 packingUnit: 'kos',
+	 nettQuantity: '3000 gramov',
+	 price: 20,
+	 ean: '800050013133',
+	 description: "Sladkor, rastlisko olje, lešniki 13%, manj masten kakav 7,4%, posneto mleko v prahu 6,6%, sirotka v prahu +, emulgator: lecitini (soja, vaniljin)",
+	 img: 'http://www.tuscc.si/cache/thumbs/53f199e7be0c845f10cc3ad6/600x600-c2/8000500131329.jpg'
+	 },
+
+	 ];*/
+	return $resource('http://smartninja.betoo.si/api/eshop/products/:id', {}, {
+		query: {isArray: true}
+	});
+});
 /**
  * Created by janko on 26/10/2016.
  */
@@ -326,79 +407,3 @@ angular.module('app').directive('navigationDirective', function () {
     };
 });
 
-
- function ProductDetailsController($scope, ProductsFactory, $stateParams) {
-    $scope.product = ProductsFactory.get({id: $stateParams.productId});
-}
-
-angular.module('app').directive('onSaleDirective', function ()
-{
-	return {
-		restrict: 'E',
-		scope: true,
-		templateUrl: '/templates/on-sale.template.html',
-		controller: OnSaleProductsController
-	}
-});
-
-// productsFactory controller
-function OnSaleProductsController ($scope, ProductsFactory) {
-	$scope.loading = true;
-	$scope.products = ProductsFactory.query({onlyOnSale: true}, function (success) {
-		$scope.loading = false;
-	});
-
-}
-function ProductsController ($scope, ProductsFactory) {
-    $scope.loading = true;
-    // search for product by name
-    $scope.$watch('query', function (newValue) {
-        $scope.products = ProductsFactory.query({query: newValue});
-    });
-    // list of all products /products
-    $scope.products = ProductsFactory.query({}, function (success) {
-        $scope.loading = false;
-    });
-
-}
-angular.module('app').factory('ProductsFactory', function($resource, $cacheFactory) {
-	/*var products = [
-	 {
-	 id: 1,
-	 product_name: 'Kekec Pašteta',
-	 manufacturer:  'Osem d.o.o.',
-	 packingUnit: 'kos',
-	 nettQuantity: '75 gramov',
-	 price: 0.45,
-	 ean: '383000860420',
-	 description: "svinjsko mastno tkivo, voda, svinjska jetra, svinjskomeso, mlečna beljakovina, jedilna sol,dekstroza, začimbe,ojačevalec arome E 621, antioksidant E 300, barvilo E 120, konzervans E 250.",
-	 img: 'http://www.tuscc.si/cache/thumbs/53f199e7be0c845f10cc3ad6/600x600-c2/3830008604200a.jpg'
-	 },
-	 {
-	 id: 2,
-	 product_name: 'Testenine Barilla, špageti, polnozr., št.5, 500g',
-	 manufacturer:  'BARILLA ADRIATIK',
-	 packingUnit: 'kos',
-	 nettQuantity: '500 gramov',
-	 price: 1.18,
-	 ean: '807680952941',
-	 description: "Najboljši špageti na svetu",
-	 img: 'http://www.tuscc.si/cache/thumbs/53f199e7be0c845f10cc3ad6/600x600-c2/8076809529419-5.jpg'
-	 },
-	 {
-	 id: 3,
-	 product_name: 'Nutella, 3kg',
-	 manufacturer:  'MITTEL CO S.R.L. S.U',
-	 packingUnit: 'kos',
-	 nettQuantity: '3000 gramov',
-	 price: 20,
-	 ean: '800050013133',
-	 description: "Sladkor, rastlisko olje, lešniki 13%, manj masten kakav 7,4%, posneto mleko v prahu 6,6%, sirotka v prahu +, emulgator: lecitini (soja, vaniljin)",
-	 img: 'http://www.tuscc.si/cache/thumbs/53f199e7be0c845f10cc3ad6/600x600-c2/8000500131329.jpg'
-	 },
-
-	 ];*/
-	return $resource('http://smartninja.betoo.si/api/eshop/products/:id', {}, {
-		query: {isArray: true}
-	});
-});

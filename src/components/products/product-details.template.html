@@ -1,42 +1,42 @@
 <div class="row">
     <!-- product image -->
     <div class="col-sm-6">
-        <img  data-ng-src="{{ product.image }}" alt="product img" class="img img-responsive img-rounded">
+        <img  data-ng-src="{{ ProductDetailCtrl.product.image }}" alt="product img" class="img img-responsive img-rounded">
     </div>
     <!-- product details -->
     <div class="col-sm-6">
         <div class="panel panel-default">
             <div class="panel-body">
-                <h2 class="page-header">{{ product.name }}</h2>
+                <h2 class="page-header">{{ ProductDetailCtrl.product.name }}</h2>
                 <p>
-                    <span class="text-bold"> Blagovna znamka: </span> {{ product.brand }}
+                    <span class="text-bold"> Blagovna znamka: </span> {{ ProductDetailCtrl.product.brand }}
 
                 </p>
                 <p>
-                    <span class="text-bold"> Tags: </span> {{ product.tagline }}
+                    <span class="text-bold"> Tags: </span> {{ ProductDetailCtrl.product.tagline }}
                 </p>
-                <p><span class="text-bold"> Barva: </span>  {{ product.color }}</p>
+                <p><span class="text-bold"> Barva: </span>  {{ ProductDetailCtrl.product.color }}</p>
                 <p class="well">
                     <span class="text-bold">Opis: </span> <br>
-                    {{ product.description }}
+                    {{ ProductDetailCtrl.product.description }}
                 </p>
                 <hr>
-                <p class="alert alert-success" data-ng-show="product.stock > 0">
+                <p class="alert alert-success" data-ng-show="ProductDetailCtrl.product.stock > 0">
                      <span class="glyphicon glyphicon-ok"></span> Dobavljivo takoj
                 </p>
-                <p class="alert alert-warning" data-ng-show="product.stock == 0">
+                <p class="alert alert-warning" data-ng-show="ProductDetailCtrl.product.stock == 0">
                     <span class="glyphicon glyphicon-warning-sign"></span>
-                    Izdelka trenutno ni na zalogi. Dobavljivo po {{ product.availableOn}}
+                    Izdelka trenutno ni na zalogi. Dobavljivo po {{ ProductDetailCtrl.product.availableOn}}
                 </p>
             </div>
             <div class="panel-footer">
-                <h4>Cena {{ product.price | number: 2 }} EUR</h4>
+                <h4>Cena {{ ProductDetailCtrl.product.price | number: 2 }} EUR</h4>
             </div>
         </div>
         <!-- add to cart -->
         <div class="info-box">
             <h3>Dodaj v Košarico</h3>
-            <add-to-cart-directive id="product.id"></add-to-cart-directive>
+            <add-to-cart-directive id="ProductDetailCtrl.product"></add-to-cart-directive>
         </div>
     </div>
 </div>
