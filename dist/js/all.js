@@ -89,45 +89,6 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
 
 });
 /**
- * Created by janko on 08/11/2016.
- */
-function CategoriesController($scope, CategoriesFactory, $stateParams, CategoryProductsFactory, $state) {
-    vm = this;
-    vm.categories = CategoriesFactory.query({});
-
-    // category products loading Products sorted by category
-    $scope.loading = true;
-
-    vm.categoryItems = CategoryProductsFactory.query({id: $stateParams.categoryId}, function (success) {
-        $scope.loading = false;
-    });
-
-
-
-    vm.thisCategory = $state.params.categoryData;
-}
-angular.module('app').directive('categoriesDirective', function () {
-    return {
-        restrict: 'E',
-        scope: {},
-        templateUrl: '/templates/categories-list.template.html',
-        controllerAs: 'CategoriesCtrl',
-        controller: CategoriesController
-    }
-});
-
-/**
- * Created by janko on 05/11/2016.
- */
-angular.module('app').factory('CategoriesFactory', function ($resource, $cacheFactory) {
-   return $resource('http://smartninja.betoo.si/api/eshop/categories');
-
-});
-angular.module('app').factory('CategoryProductsFactory', function ($resource) {
-    return $resource('http://smartninja.betoo.si/api/eshop/categories/:id/products');
-});
-
-/**
  * Created by janko on 04/11/2016.
  */
 angular.module('app').directive('addToCartDirective', function () {
@@ -187,6 +148,45 @@ function CartController ($scope, CartItemsFactory, ProductsFactory, locker, $sta
 }
 
 /**
+ * Created by janko on 08/11/2016.
+ */
+function CategoriesController($scope, CategoriesFactory, $stateParams, CategoryProductsFactory, $state) {
+    vm = this;
+    vm.categories = CategoriesFactory.query({});
+
+    // category products loading Products sorted by category
+    $scope.loading = true;
+
+    vm.categoryItems = CategoryProductsFactory.query({id: $stateParams.categoryId}, function (success) {
+        $scope.loading = false;
+    });
+
+
+
+    vm.thisCategory = $state.params.categoryData;
+}
+angular.module('app').directive('categoriesDirective', function () {
+    return {
+        restrict: 'E',
+        scope: {},
+        templateUrl: '/templates/categories-list.template.html',
+        controllerAs: 'CategoriesCtrl',
+        controller: CategoriesController
+    }
+});
+
+/**
+ * Created by janko on 05/11/2016.
+ */
+angular.module('app').factory('CategoriesFactory', function ($resource, $cacheFactory) {
+   return $resource('http://smartninja.betoo.si/api/eshop/categories');
+
+});
+angular.module('app').factory('CategoryProductsFactory', function ($resource) {
+    return $resource('http://smartninja.betoo.si/api/eshop/categories/:id/products');
+});
+
+/**
  * Created by janko on 09/11/2016.
  */
 function HomeDirectiveController(ProductsFactory) {
@@ -209,7 +209,7 @@ angular.module('app').directive('homeDirective', function () {
     };
 });
 
-function OrderController (CartItemsFactory, OrdersFactory, $state, locker) {
+function OrderController ($scope, CartItemsFactory, OrdersFactory, $state, locker) {
     vm = this;
     // form fields
     vm.firstName = '';
@@ -220,9 +220,9 @@ function OrderController (CartItemsFactory, OrdersFactory, $state, locker) {
     vm.city = '';
     vm.country = '';
     vm.products = CartItemsFactory.items;
-    vm.orders = OrdersFactory.orders;
-    var products = [];
+    vm.orderDetails = locker.get('orderDetails', []);
 
+    var products = [];
 
     for (item in vm.products)
     {
@@ -244,6 +244,7 @@ function OrderController (CartItemsFactory, OrdersFactory, $state, locker) {
             country: country,
             products: products
         });
+        locker.put('orderDetails', newOrder);
         // save order to api server
         newOrder.$save(function (response) {
             // get saving order response message
@@ -254,6 +255,15 @@ function OrderController (CartItemsFactory, OrdersFactory, $state, locker) {
     };
     // order success message
     vm.resData = $state.params.data;
+    console.log(vm.orderDetails.data);
+    // order complete
+    vm.orderComplete = function () {
+        locker.forget('myCart');
+        locker.forget('orderDetails');
+        $state.go('index');
+        window.location.reload()
+
+    }
 
 
 

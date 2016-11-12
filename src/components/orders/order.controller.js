@@ -1,4 +1,4 @@
-function OrderController (CartItemsFactory, OrdersFactory, $state, locker) {
+function OrderController ($scope, CartItemsFactory, OrdersFactory, $state, locker) {
     vm = this;
     // form fields
     vm.firstName = '';
@@ -9,9 +9,9 @@ function OrderController (CartItemsFactory, OrdersFactory, $state, locker) {
     vm.city = '';
     vm.country = '';
     vm.products = CartItemsFactory.items;
-    vm.orders = OrdersFactory.orders;
-    var products = [];
+    vm.orderDetails = locker.get('orderDetails', []);
 
+    var products = [];
 
     for (item in vm.products)
     {
@@ -33,6 +33,7 @@ function OrderController (CartItemsFactory, OrdersFactory, $state, locker) {
             country: country,
             products: products
         });
+        locker.put('orderDetails', newOrder);
         // save order to api server
         newOrder.$save(function (response) {
             // get saving order response message
@@ -43,6 +44,15 @@ function OrderController (CartItemsFactory, OrdersFactory, $state, locker) {
     };
     // order success message
     vm.resData = $state.params.data;
+    console.log(vm.orderDetails.data);
+    // order complete
+    vm.orderComplete = function () {
+        locker.forget('myCart');
+        locker.forget('orderDetails');
+        $state.go('index');
+        window.location.reload()
+
+    }
 
 
 

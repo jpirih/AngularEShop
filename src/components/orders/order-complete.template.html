@@ -10,4 +10,42 @@
             Uspešno ste oddali naročilo. Server response message: <span class="text-bold">{{ OrderCtrl.resData.msg }}</span>
         </div>
     </div>
+</div>
+<!-- order review -->
+<div class="row">
+    <div class="col-sm-4">
+        <div class="info-box">
+            <h3>Kupec</h3>
+            {{ OrderCtrl.orderDetails.firstName }} {{ OrderCtrl.orderDetails.lastName }} <br>
+            {{ OrderCtrl.orderDetails.address }} <br>
+            {{ OrderCtrl.orderDetails.zip }} {{ OrderCtrl.orderDetails.city }} <br>
+            {{ OrderCtrl.orderDetails.country }}
+        </div>
     </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-sm-8">
+        <table class="table table-responsive table-bordered table-striped table-condensed">
+            <thead>
+            <tr class="table-header">
+                <th>Izdelek</th>
+                <th>Količina</th>
+                <th>Cena €</th>
+                <th>Vrednost €</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="item in OrderCtrl.products">
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.product.price }}</td>
+                <td>{{ item.total }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <button class="btn btn-danger" data-ng-click="OrderCtrl.orderComplete()">Nazaj</button>
+</div>
