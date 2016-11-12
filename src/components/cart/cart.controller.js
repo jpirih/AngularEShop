@@ -8,6 +8,7 @@ function CartController ($scope, CartItemsFactory, ProductsFactory, locker, $sta
     var itemTotal = 0;
     var selectedItem = {};
 
+
     // add product to cart
     vm.addToCart = function (product)
     {
@@ -30,8 +31,9 @@ function CartController ($scope, CartItemsFactory, ProductsFactory, locker, $sta
 
     // empty my cart - delete all products from the cart
     vm.emptyCart = function () {
-        locker.forget('myCart');
-        return window.location.reload();
+         return clearCart.open;
+        /*locker.forget('myCart');
+        return window.location.reload();*/
     };
 
 

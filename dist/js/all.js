@@ -118,6 +118,7 @@ function CartController ($scope, CartItemsFactory, ProductsFactory, locker, $sta
     var itemTotal = 0;
     var selectedItem = {};
 
+
     // add product to cart
     vm.addToCart = function (product)
     {
@@ -140,12 +141,69 @@ function CartController ($scope, CartItemsFactory, ProductsFactory, locker, $sta
 
     // empty my cart - delete all products from the cart
     vm.emptyCart = function () {
-        locker.forget('myCart');
-        return window.location.reload();
+         return clearCart.open;
+        /*locker.forget('myCart');
+        return window.location.reload();*/
     };
 
 
 }
+
+/**
+ * Created by janko on 12/11/2016.
+ */
+
+function ClearCartController($scope, $uibModal, locker) {
+    $scope.openModal = function ()
+    {
+        // opens modal window
+        var modalInstance = $uibModal.open({
+
+            templateUrl: '/templates/clear-cart-modal.template.html',
+            controller: ClearCartModalController,
+            resolve: {
+                input: modalInput
+            }
+        });
+        // when ok is clicked  clears myCart from local history
+        modalInstance.result.then(function (success) {
+            locker.forget('myCart');
+            return window.location.reload();
+        });
+    }
+}
+
+// modal input  text inside modal
+function modalInput() {
+    return 'Res želite izprazniti košarico?';
+}
+/**
+ * Created by janko on 12/11/2016.
+ */
+function ClearCartModalController ($scope, $uibModalInstance, input) {
+    $scope.data = input;
+
+    $scope.ok = function () {
+        $uibModalInstance.close('Success');
+    };
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    }
+}
+/**
+ * Created by janko on 12/11/2016.
+ */
+angular.module('app').directive('clearCart', function () {
+    return {
+        restrict: 'E',
+        controller: ClearCartController,
+        template: '<button class="btn btn-danger" ng-click="openModal()">Izprazni Košarico</button>'
+    };
+});
+
+
+
 
 /**
  * Created by janko on 08/11/2016.
