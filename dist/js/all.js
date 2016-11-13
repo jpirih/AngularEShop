@@ -58,7 +58,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state('products', {
         url: '/products',
         templateUrl: '/templates/products.template.html',
-        controllerAS: 'ProductsCtrl',
+        controllerAs: 'ProductsCtrl',
         controller: ProductsController
     });
     // my cart
@@ -110,7 +110,7 @@ angular.module('app').factory('CartItemsFactory', function (locker) {
 
 // cart controller
 function CartController ($scope, CartItemsFactory, ProductsFactory, locker, $state) {
-    vm = this;
+    var vm = this;
     vm.items = CartItemsFactory.items;
     vm.products = ProductsFactory.query({});
     vm.totalItems = 0;
@@ -138,78 +138,13 @@ function CartController ($scope, CartItemsFactory, ProductsFactory, locker, $sta
     }
     // Order Total amount to pay
     vm.cartTotal = cartTotal;
-
-    // empty my cart - delete all products from the cart
-    vm.emptyCart = function () {
-         return clearCart.open;
-        /*locker.forget('myCart');
-        return window.location.reload();*/
-    };
-
-
 }
-
-/**
- * Created by janko on 12/11/2016.
- */
-
-function ClearCartController($scope, $uibModal, locker) {
-    $scope.openModal = function ()
-    {
-        // opens modal window
-        var modalInstance = $uibModal.open({
-
-            templateUrl: '/templates/clear-cart-modal.template.html',
-            controller: ClearCartModalController,
-            resolve: {
-                input: modalInput
-            }
-        });
-        // when ok is clicked  clears myCart from local history
-        modalInstance.result.then(function (success) {
-            locker.forget('myCart');
-            return window.location.reload();
-        });
-    }
-}
-
-// modal input  text inside modal
-function modalInput() {
-    return 'Res želite izprazniti košarico?';
-}
-/**
- * Created by janko on 12/11/2016.
- */
-function ClearCartModalController ($scope, $uibModalInstance, input) {
-    $scope.data = input;
-
-    $scope.ok = function () {
-        $uibModalInstance.close('Success');
-    };
-
-    $scope.cancel = function () {
-        $uibModalInstance.dismiss('cancel');
-    }
-}
-/**
- * Created by janko on 12/11/2016.
- */
-angular.module('app').directive('clearCart', function () {
-    return {
-        restrict: 'E',
-        controller: ClearCartController,
-        template: '<button class="btn btn-danger" ng-click="openModal()">Izprazni Košarico</button>'
-    };
-});
-
-
-
 
 /**
  * Created by janko on 08/11/2016.
  */
 function CategoriesController($scope, CategoriesFactory, $stateParams, CategoryProductsFactory, $state) {
-    vm = this;
+    var vm = this;
     vm.categories = CategoriesFactory.query({});
 
     // category products loading Products sorted by category
@@ -218,7 +153,6 @@ function CategoriesController($scope, CategoriesFactory, $stateParams, CategoryP
     vm.categoryItems = CategoryProductsFactory.query({id: $stateParams.categoryId}, function (success) {
         $scope.loading = false;
     });
-
 
 
     vm.thisCategory = $state.params.categoryData;
@@ -248,7 +182,7 @@ angular.module('app').factory('CategoryProductsFactory', function ($resource) {
  * Created by janko on 09/11/2016.
  */
 function HomeDirectiveController(ProductsFactory) {
-    vm = this;
+    var vm = this;
 
     vm.interval = 3000;
     vm.productsOnSale = ProductsFactory.query({onlyOnSale: true});
@@ -267,16 +201,9 @@ angular.module('app').directive('homeDirective', function () {
     };
 });
 
-function OrderController ($scope, CartItemsFactory, OrdersFactory, $state, locker) {
-    vm = this;
-    // form fields
-    vm.firstName = '';
-    vm.lastName = '';
-    vm.customerEmail = '';
-    vm.address = '';
-    vm.zipCode = null;
-    vm.city = '';
-    vm.country = '';
+function OrderController (CartItemsFactory, OrdersFactory, $state, locker) {
+    var vm = this;
+
     vm.products = CartItemsFactory.items;
     vm.orderDetails = locker.get('orderDetails', []);
 
@@ -314,12 +241,12 @@ function OrderController ($scope, CartItemsFactory, OrdersFactory, $state, locke
     // order success message
     vm.resData = $state.params.data;
     console.log(vm.orderDetails.data);
-    // order complete
+    // order complete // button Nazaj back to index on order review
     vm.orderComplete = function () {
         locker.forget('myCart');
         locker.forget('orderDetails');
         $state.go('index');
-        window.location.reload()
+        return window.location.reload()
 
     }
 
@@ -342,9 +269,9 @@ angular.module('app').factory('OrdersFactory', function ($resource) {
 });
 
  function ProductDetailsController(ProductsFactory, $stateParams) {
-     vm = this;
-    vm.product = ProductsFactory.get({id: $stateParams.productId});
-}
+     var vm = this;
+     vm.product = ProductsFactory.get({id: $stateParams.productId});
+ }
 
 angular.module('app').directive('onSaleDirective', function ()
 {
@@ -362,7 +289,7 @@ angular.module('app').directive('onSaleDirective', function ()
  */
 // products on sale directive controller
 function OnSaleProductsController ($scope, ProductsFactory) {
-    vm = this;
+    var vm = this;
     $scope.loading = true;
     vm.products = ProductsFactory.query({onlyOnSale: true}, function (success) {
         $scope.loading = false;
@@ -370,7 +297,7 @@ function OnSaleProductsController ($scope, ProductsFactory) {
 
 }
 function ProductsController ($scope, ProductsFactory) {
-    vm = this;
+    var vm = this;
     $scope.loading = true;
     // search for product by name
     $scope.$watch('query', function (newValue) {
@@ -437,7 +364,7 @@ angular.module('app').controller('UsersController', function($scope){
 });
 
 function MainNavigationController($http, ProductsFactory, $state, CartItemsFactory, CategoriesFactory) {
-    vm = this;
+    var vm = this;
     // navbar collapse
     vm.isNavCollapsed = true;
     vm.isCollapsed = false;
@@ -474,4 +401,64 @@ angular.module('app').directive('navigationDirective', function () {
         controller: MainNavigationController
     };
 });
+
+
+/**
+ * Created by janko on 12/11/2016.
+ */
+
+function ClearCartController( $uibModal, locker) {
+    var vm = this;
+    vm.openModal = function ()
+    {
+        // opens modal window
+        var modalInstance = $uibModal.open({
+
+            templateUrl: '/templates/clear-cart-modal.template.html',
+            controllerAs: 'ClearModalCtrl',
+            controller: ClearCartModalController,
+            resolve: {
+                input: modalInput
+            }
+        });
+        // when ok is clicked  clears myCart from local history
+        modalInstance.result.then(function (success) {
+            locker.forget('myCart');
+            return window.location.reload();
+        });
+    }
+}
+
+// modal input  text inside modal
+function modalInput() {
+    return 'Res želite izprazniti košarico?';
+}
+/**
+ * Created by janko on 12/11/2016.
+ */
+function ClearCartModalController ($uibModalInstance, input) {
+    var vm = this;
+    vm.data = input;
+
+    vm.ok = function () {
+        $uibModalInstance.close('Success');
+    };
+
+    vm.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    }
+}
+/**
+ * Created by janko on 12/11/2016.
+ */
+angular.module('app').directive('clearCart', function () {
+    return {
+        restrict: 'E',
+        controllerAs: 'ClearCartCtrl',
+        controller: ClearCartController,
+        template: '<button class="btn btn-danger" ng-click="ClearCartCtrl.openModal()">Izprazni Košarico</button>'
+    };
+});
+
+
 

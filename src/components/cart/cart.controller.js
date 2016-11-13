@@ -1,6 +1,6 @@
 // cart controller
 function CartController ($scope, CartItemsFactory, ProductsFactory, locker, $state) {
-    vm = this;
+    var vm = this;
     vm.items = CartItemsFactory.items;
     vm.products = ProductsFactory.query({});
     vm.totalItems = 0;
@@ -28,13 +28,4 @@ function CartController ($scope, CartItemsFactory, ProductsFactory, locker, $sta
     }
     // Order Total amount to pay
     vm.cartTotal = cartTotal;
-
-    // empty my cart - delete all products from the cart
-    vm.emptyCart = function () {
-         return clearCart.open;
-        /*locker.forget('myCart');
-        return window.location.reload();*/
-    };
-
-
 }

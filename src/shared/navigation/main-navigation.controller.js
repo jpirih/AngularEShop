@@ -1,5 +1,5 @@
 function MainNavigationController($http, ProductsFactory, $state, CartItemsFactory, CategoriesFactory) {
-    vm = this;
+    var vm = this;
     // navbar collapse
     vm.isNavCollapsed = true;
     vm.isCollapsed = false;

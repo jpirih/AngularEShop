@@ -4,8 +4,9 @@
 angular.module('app').directive('clearCart', function () {
     return {
         restrict: 'E',
+        controllerAs: 'ClearCartCtrl',
         controller: ClearCartController,
-        template: '<button class="btn btn-danger" ng-click="openModal()">Izprazni Košarico</button>'
+        template: '<button class="btn btn-danger" ng-click="ClearCartCtrl.openModal()">Izprazni Košarico</button>'
     };
 });
 

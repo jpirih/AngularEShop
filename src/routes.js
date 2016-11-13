@@ -50,7 +50,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state('products', {
         url: '/products',
         templateUrl: '/templates/products.template.html',
-        controllerAS: 'ProductsCtrl',
+        controllerAs: 'ProductsCtrl',
         controller: ProductsController
     });
     // my cart

@@ -1,13 +1,6 @@
-function OrderController ($scope, CartItemsFactory, OrdersFactory, $state, locker) {
-    vm = this;
-    // form fields
-    vm.firstName = '';
-    vm.lastName = '';
-    vm.customerEmail = '';
-    vm.address = '';
-    vm.zipCode = null;
-    vm.city = '';
-    vm.country = '';
+function OrderController (CartItemsFactory, OrdersFactory, $state, locker) {
+    var vm = this;
+
     vm.products = CartItemsFactory.items;
     vm.orderDetails = locker.get('orderDetails', []);
 
@@ -45,12 +38,12 @@ function OrderController ($scope, CartItemsFactory, OrdersFactory, $state, locke
     // order success message
     vm.resData = $state.params.data;
     console.log(vm.orderDetails.data);
-    // order complete
+    // order complete // button Nazaj back to index on order review
     vm.orderComplete = function () {
         locker.forget('myCart');
         locker.forget('orderDetails');
         $state.go('index');
-        window.location.reload()
+        return window.location.reload()
 
     }
 

@@ -1,5 +1,5 @@
 function ProductsController ($scope, ProductsFactory) {
-    vm = this;
+    var vm = this;
     $scope.loading = true;
     // search for product by name
     $scope.$watch('query', function (newValue) {
