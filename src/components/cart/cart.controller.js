@@ -1,10 +1,10 @@
 // cart controller
-function CartController ($scope, CartItemsFactory, ProductsFactory, locker, $state) {
+function CartController (CartItemsFactory, ProductsFactory, locker, $state) {
     var vm = this;
     vm.items = CartItemsFactory.items;
     vm.products = ProductsFactory.query({});
     vm.totalItems = 0;
-    $scope.quantity = 1;
+    vm.quantity = 1;
     var itemTotal = 0;
     var selectedItem = {};
 
@@ -13,8 +13,8 @@ function CartController ($scope, CartItemsFactory, ProductsFactory, locker, $sta
     vm.addToCart = function (product)
     {
         selectedItem = product;
-        itemTotal = $scope.quantity * product.price;
-        vm.items.push({product: selectedItem, quantity: $scope.quantity, total: itemTotal});
+        itemTotal = vm.quantity * product.price;
+        vm.items.push({product: selectedItem, quantity: vm.quantity, total: itemTotal});
         locker.put('myCart', vm.items)
     };
     

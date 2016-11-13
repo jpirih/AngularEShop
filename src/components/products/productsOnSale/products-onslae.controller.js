@@ -2,11 +2,11 @@
  * Created by janko on 12/11/2016.
  */
 // products on sale directive controller
-function OnSaleProductsController ($scope, ProductsFactory) {
+function OnSaleProductsController (ProductsFactory) {
     var vm = this;
-    $scope.loading = true;
+    vm.loading = true;
     vm.products = ProductsFactory.query({onlyOnSale: true}, function (success) {
-        $scope.loading = false;
+        vm.loading = false;
     });
 
 }

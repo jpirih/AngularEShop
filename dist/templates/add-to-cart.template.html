@@ -1,7 +1,7 @@
 
 <form name="addToCartForm" novalidate class="form-inline">
     <label for="quantity">Količina:</label>
-    <input type="number"  class="form-control" data-ng-required="true" data-ng-model="quantity">
+    <input type="number"  class="form-control" data-ng-required="true" data-ng-model="CartCtrl.quantity">
     <button class="btn btn-success" data-ng-disabled="addToCartForm.$invalid" data-ng-click="CartCtrl.addToCart(id)">
         <span class="glyphicon glyphicon-shopping-cart"></span>
     </button>

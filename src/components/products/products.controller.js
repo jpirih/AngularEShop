@@ -1,13 +1,13 @@
 function ProductsController ($scope, ProductsFactory) {
     var vm = this;
-    $scope.loading = true;
+    vm.loading = true;
     // search for product by name
-    $scope.$watch('query', function (newValue) {
-        $scope.products = ProductsFactory.query({query: newValue});
+    $scope.$watch('ProductsCtrl.query', function (newValue) {
+        vm.products = ProductsFactory.query({query: newValue});
     });
     // list of all products /products
     vm.products = ProductsFactory.query({}, function (success) {
-        $scope.loading = false;
+        vm.loading = false;
     });
 
 }

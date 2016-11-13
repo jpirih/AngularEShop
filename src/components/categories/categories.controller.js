@@ -1,15 +1,15 @@
 /**
  * Created by janko on 08/11/2016.
  */
-function CategoriesController($scope, CategoriesFactory, $stateParams, CategoryProductsFactory, $state) {
+function CategoriesController(CategoriesFactory, $stateParams, CategoryProductsFactory, $state) {
     var vm = this;
     vm.categories = CategoriesFactory.query({});
 
     // category products loading Products sorted by category
-    $scope.loading = true;
+    vm.loading = true;
 
     vm.categoryItems = CategoryProductsFactory.query({id: $stateParams.categoryId}, function (success) {
-        $scope.loading = false;
+        vm.loading = false;
     });
 
 

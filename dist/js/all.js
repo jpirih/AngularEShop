@@ -78,6 +78,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
         controller: CategoriesController
     });
 
+    // order review
     $stateProvider.state('orderComplete', {
         url: '/cart/order/order-complete',
         params: {data: null},
@@ -89,69 +90,17 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
 
 });
 /**
- * Created by janko on 04/11/2016.
- */
-angular.module('app').directive('addToCartDirective', function () {
-    return {
-        restrict: 'E',
-        scope: {id: '='},
-        templateUrl: '/templates/add-to-cart.template.html',
-        controllerAs: 'CartCtrl',
-        controller: CartController
-    }
-});
-angular.module('app').factory('CartItemsFactory', function (locker) {
-    var items = locker.get('myCart', []);
-
-    return {
-        items: items
-    };
-});
-
-// cart controller
-function CartController ($scope, CartItemsFactory, ProductsFactory, locker, $state) {
-    var vm = this;
-    vm.items = CartItemsFactory.items;
-    vm.products = ProductsFactory.query({});
-    vm.totalItems = 0;
-    $scope.quantity = 1;
-    var itemTotal = 0;
-    var selectedItem = {};
-
-
-    // add product to cart
-    vm.addToCart = function (product)
-    {
-        selectedItem = product;
-        itemTotal = $scope.quantity * product.price;
-        vm.items.push({product: selectedItem, quantity: $scope.quantity, total: itemTotal});
-        locker.put('myCart', vm.items)
-    };
-    
-
-    // cart template data
-    var cartTotal = 0;
-    for (item in vm.items)
-    {
-        cartTotal = cartTotal += vm.items[item].total;
-        vm.totalItems = vm.totalItems + vm.items[item].quantity;
-    }
-    // Order Total amount to pay
-    vm.cartTotal = cartTotal;
-}
-
-/**
  * Created by janko on 08/11/2016.
  */
-function CategoriesController($scope, CategoriesFactory, $stateParams, CategoryProductsFactory, $state) {
+function CategoriesController(CategoriesFactory, $stateParams, CategoryProductsFactory, $state) {
     var vm = this;
     vm.categories = CategoriesFactory.query({});
 
     // category products loading Products sorted by category
-    $scope.loading = true;
+    vm.loading = true;
 
     vm.categoryItems = CategoryProductsFactory.query({id: $stateParams.categoryId}, function (success) {
-        $scope.loading = false;
+        vm.loading = false;
     });
 
 
@@ -177,6 +126,58 @@ angular.module('app').factory('CategoriesFactory', function ($resource, $cacheFa
 angular.module('app').factory('CategoryProductsFactory', function ($resource) {
     return $resource('http://smartninja.betoo.si/api/eshop/categories/:id/products');
 });
+
+/**
+ * Created by janko on 04/11/2016.
+ */
+angular.module('app').directive('addToCartDirective', function () {
+    return {
+        restrict: 'E',
+        scope: {id: '='},
+        templateUrl: '/templates/add-to-cart.template.html',
+        controllerAs: 'CartCtrl',
+        controller: CartController
+    }
+});
+angular.module('app').factory('CartItemsFactory', function (locker) {
+    var items = locker.get('myCart', []);
+
+    return {
+        items: items
+    };
+});
+
+// cart controller
+function CartController (CartItemsFactory, ProductsFactory, locker, $state) {
+    var vm = this;
+    vm.items = CartItemsFactory.items;
+    vm.products = ProductsFactory.query({});
+    vm.totalItems = 0;
+    vm.quantity = 1;
+    var itemTotal = 0;
+    var selectedItem = {};
+
+
+    // add product to cart
+    vm.addToCart = function (product)
+    {
+        selectedItem = product;
+        itemTotal = vm.quantity * product.price;
+        vm.items.push({product: selectedItem, quantity: vm.quantity, total: itemTotal});
+        locker.put('myCart', vm.items)
+    };
+    
+
+    // cart template data
+    var cartTotal = 0;
+    for (item in vm.items)
+    {
+        cartTotal = cartTotal += vm.items[item].total;
+        vm.totalItems = vm.totalItems + vm.items[item].quantity;
+    }
+    // Order Total amount to pay
+    vm.cartTotal = cartTotal;
+}
 
 /**
  * Created by janko on 09/11/2016.
@@ -273,39 +274,16 @@ angular.module('app').factory('OrdersFactory', function ($resource) {
      vm.product = ProductsFactory.get({id: $stateParams.productId});
  }
 
-angular.module('app').directive('onSaleDirective', function ()
-{
-	return {
-		restrict: 'E',
-		scope: true,
-		templateUrl: '/templates/on-sale.template.html',
-		controllerAs: 'OnSaleCtrl',
-		controller: OnSaleProductsController
-	}
-});
-
-/**
- * Created by janko on 12/11/2016.
- */
-// products on sale directive controller
-function OnSaleProductsController ($scope, ProductsFactory) {
-    var vm = this;
-    $scope.loading = true;
-    vm.products = ProductsFactory.query({onlyOnSale: true}, function (success) {
-        $scope.loading = false;
-    });
-
-}
 function ProductsController ($scope, ProductsFactory) {
     var vm = this;
-    $scope.loading = true;
+    vm.loading = true;
     // search for product by name
-    $scope.$watch('query', function (newValue) {
-        $scope.products = ProductsFactory.query({query: newValue});
+    $scope.$watch('ProductsCtrl.query', function (newValue) {
+        vm.products = ProductsFactory.query({query: newValue});
     });
     // list of all products /products
     vm.products = ProductsFactory.query({}, function (success) {
-        $scope.loading = false;
+        vm.loading = false;
     });
 
 }
@@ -462,3 +440,27 @@ angular.module('app').directive('clearCart', function () {
 
 
 
+
+angular.module('app').directive('onSaleDirective', function ()
+{
+	return {
+		restrict: 'E',
+		scope: true,
+		templateUrl: '/templates/on-sale.template.html',
+		controllerAs: 'OnSaleCtrl',
+		controller: OnSaleProductsController
+	}
+});
+
+/**
+ * Created by janko on 12/11/2016.
+ */
+// products on sale directive controller
+function OnSaleProductsController (ProductsFactory) {
+    var vm = this;
+    vm.loading = true;
+    vm.products = ProductsFactory.query({onlyOnSale: true}, function (success) {
+        vm.loading = false;
+    });
+
+}

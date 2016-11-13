@@ -70,6 +70,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
         controller: CategoriesController
     });
 
+    // order review
     $stateProvider.state('orderComplete', {
         url: '/cart/order/order-complete',
         params: {data: null},
