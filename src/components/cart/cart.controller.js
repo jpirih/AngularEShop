@@ -1,5 +1,5 @@
-// cart controller
-function CartController (CartItemsFactory, ProductsFactory, locker, $state) {
+
+angular.module('app').controller('CartController', function(CartItemsFactory, ProductsFactory, locker, $state) {
     var vm = this;
     vm.items = CartItemsFactory.items;
     vm.products = ProductsFactory.query({});
@@ -28,4 +28,4 @@ function CartController (CartItemsFactory, ProductsFactory, locker, $state) {
     }
     // Order Total amount to pay
     vm.cartTotal = cartTotal;
-}
+});

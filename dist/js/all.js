@@ -1,4 +1,4 @@
-angular.module('app', ['ui.router', 'ngResource', 'ui.bootstrap', 'angular-locker']);
+angular.module('app', ['ui.router', 'ngResource', 'ui.bootstrap', 'angular-locker', 'ngAnimate']);
 
 angular.module('app').config(function(lockerProvider){
    lockerProvider.defaults({
@@ -66,7 +66,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
         url: '/cart',
         templateUrl: '/templates/cart.template.html',
         controllerAs: 'CartCtrl',
-        controller: CartController
+        controller: 'CartController'
     });
 
     // category products
@@ -89,6 +89,59 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
 
 
 });
+/**
+ * Created by janko on 04/11/2016.
+ */
+angular.module('app').directive('addToCartDirective', function () {
+    return {
+        restrict: 'E',
+        scope: {id: '='},
+        templateUrl: '/templates/add-to-cart.template.html',
+        controller: 'CartController',
+        controllerAs: 'CartCtrl'
+
+    }
+});
+angular.module('app').factory('CartItemsFactory', function (locker) {
+    var items = locker.get('myCart', []);
+
+    return {
+        items: items
+    };
+});
+
+
+angular.module('app').controller('CartController', function(CartItemsFactory, ProductsFactory, locker, $state) {
+    var vm = this;
+    vm.items = CartItemsFactory.items;
+    vm.products = ProductsFactory.query({});
+    vm.totalItems = 0;
+    vm.quantity = 1;
+    var itemTotal = 0;
+    var selectedItem = {};
+
+
+    // add product to cart
+    vm.addToCart = function (product)
+    {
+        selectedItem = product;
+        itemTotal = vm.quantity * product.price;
+        vm.items.push({product: selectedItem, quantity: vm.quantity, total: itemTotal});
+        locker.put('myCart', vm.items)
+    };
+    
+
+    // cart template data
+    var cartTotal = 0;
+    for (item in vm.items)
+    {
+        cartTotal = cartTotal += vm.items[item].total;
+        vm.totalItems = vm.totalItems + vm.items[item].quantity;
+    }
+    // Order Total amount to pay
+    vm.cartTotal = cartTotal;
+});
+
 /**
  * Created by janko on 08/11/2016.
  */
@@ -128,58 +181,6 @@ angular.module('app').factory('CategoryProductsFactory', function ($resource) {
 });
 
 /**
- * Created by janko on 04/11/2016.
- */
-angular.module('app').directive('addToCartDirective', function () {
-    return {
-        restrict: 'E',
-        scope: {id: '='},
-        templateUrl: '/templates/add-to-cart.template.html',
-        controllerAs: 'CartCtrl',
-        controller: CartController
-    }
-});
-angular.module('app').factory('CartItemsFactory', function (locker) {
-    var items = locker.get('myCart', []);
-
-    return {
-        items: items
-    };
-});
-
-// cart controller
-function CartController (CartItemsFactory, ProductsFactory, locker, $state) {
-    var vm = this;
-    vm.items = CartItemsFactory.items;
-    vm.products = ProductsFactory.query({});
-    vm.totalItems = 0;
-    vm.quantity = 1;
-    var itemTotal = 0;
-    var selectedItem = {};
-
-
-    // add product to cart
-    vm.addToCart = function (product)
-    {
-        selectedItem = product;
-        itemTotal = vm.quantity * product.price;
-        vm.items.push({product: selectedItem, quantity: vm.quantity, total: itemTotal});
-        locker.put('myCart', vm.items)
-    };
-    
-
-    // cart template data
-    var cartTotal = 0;
-    for (item in vm.items)
-    {
-        cartTotal = cartTotal += vm.items[item].total;
-        vm.totalItems = vm.totalItems + vm.items[item].quantity;
-    }
-    // Order Total amount to pay
-    vm.cartTotal = cartTotal;
-}
-
-/**
  * Created by janko on 09/11/2016.
  */
 function HomeDirectiveController(ProductsFactory) {
@@ -202,7 +203,7 @@ angular.module('app').directive('homeDirective', function () {
     };
 });
 
-function OrderController (CartItemsFactory, OrdersFactory, $state, locker) {
+    function OrderController (CartItemsFactory, OrdersFactory, $state, locker) {
     var vm = this;
 
     vm.products = CartItemsFactory.items;

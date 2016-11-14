@@ -58,7 +58,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
         url: '/cart',
         templateUrl: '/templates/cart.template.html',
         controllerAs: 'CartCtrl',
-        controller: CartController
+        controller: 'CartController'
     });
 
     // category products

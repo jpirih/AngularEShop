@@ -1,4 +1,4 @@
-function OrderController (CartItemsFactory, OrdersFactory, $state, locker) {
+    function OrderController (CartItemsFactory, OrdersFactory, $state, locker) {
     var vm = this;
 
     vm.products = CartItemsFactory.items;

@@ -6,7 +6,8 @@ angular.module('app').directive('addToCartDirective', function () {
         restrict: 'E',
         scope: {id: '='},
         templateUrl: '/templates/add-to-cart.template.html',
-        controllerAs: 'CartCtrl',
-        controller: CartController
+        controller: 'CartController',
+        controllerAs: 'CartCtrl'
+
     }
 });
