@@ -2,6 +2,7 @@
 angular.module('app').controller('CartController', function(CartItemsFactory, ProductsFactory, locker, $state) {
     var vm = this;
     vm.items = CartItemsFactory.items;
+
     vm.products = ProductsFactory.query({});
     vm.totalItems = 0;
     vm.quantity = 1;
@@ -34,9 +35,11 @@ angular.module('app').controller('CartController', function(CartItemsFactory, Pr
     {
         var index = vm.items.indexOf(item);
         vm.items.splice(index, 1);
-        locker.get('myCart');
         $state.reload();
 
 
+
+
     }
+
 });

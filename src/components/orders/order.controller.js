@@ -37,7 +37,7 @@
     };
     // order success message
     vm.resData = $state.params.data;
-    console.log(vm.orderDetails.data);
+
     // order complete // button Nazaj back to index on order review
     vm.orderComplete = function () {
         locker.forget('myCart');
