@@ -1,4 +1,4 @@
-function MainNavigationController($http, ProductsFactory, $state, CartItemsFactory, CategoriesFactory) {
+angular.module('app').controller('MainNavigationController', function ($http, ProductsFactory, $state, CartItemsFactory, CategoriesFactory) {
     var vm = this;
     // navbar collapse
     vm.isNavCollapsed = true;
@@ -22,4 +22,4 @@ function MainNavigationController($http, ProductsFactory, $state, CartItemsFacto
 
     // categories for dropdown menu
     vm.categories = CategoriesFactory.query({});
-}
+});

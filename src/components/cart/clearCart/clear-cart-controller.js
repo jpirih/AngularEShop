@@ -1,8 +1,8 @@
-/**
+        /**
  * Created by janko on 12/11/2016.
  */
 
-function ClearCartController( $uibModal, locker) {
+angular.module('app').controller('ClearCartController', function ( $uibModal, locker) {
     var vm = this;
     vm.openModal = function ()
     {
@@ -11,7 +11,7 @@ function ClearCartController( $uibModal, locker) {
 
             templateUrl: '/templates/clear-cart-modal.template.html',
             controllerAs: 'ClearModalCtrl',
-            controller: ClearCartModalController,
+            controller: 'ClearCartModalController',
             resolve: {
                 input: modalInput
             }
@@ -22,7 +22,7 @@ function ClearCartController( $uibModal, locker) {
             return window.location.reload();
         });
     }
-}
+});
 
 // modal input  text inside modal
 function modalInput() {

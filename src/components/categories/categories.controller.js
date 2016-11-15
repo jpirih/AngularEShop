@@ -1,7 +1,7 @@
 /**
  * Created by janko on 08/11/2016.
  */
-function CategoriesController(CategoriesFactory, $stateParams, CategoryProductsFactory, $state) {
+angular.module('app').controller('CategoriesController', function (CategoriesFactory, $stateParams, CategoryProductsFactory, $state) {
     var vm = this;
     vm.categories = CategoriesFactory.query({});
 
@@ -14,4 +14,5 @@ function CategoriesController(CategoriesFactory, $stateParams, CategoryProductsF
 
 
     vm.thisCategory = $state.params.categoryData;
-}
+    console.log('asdf');
+});

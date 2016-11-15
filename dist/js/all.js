@@ -52,14 +52,14 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
         url: '/products/:productId',
         templateUrl: '/templates/product-details.template.html',
         controllerAs: 'ProductDetailCtrl',
-        controller: ProductDetailsController
+        controller: 'ProductDetailsController'
     });
     // all products list
     $stateProvider.state('products', {
         url: '/products',
         templateUrl: '/templates/products.template.html',
         controllerAs: 'ProductsCtrl',
-        controller: ProductsController
+        controller: 'ProductsController'
     });
     // my cart
     $stateProvider.state('cart', {
@@ -75,7 +75,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
         params: {categoryData: null},
         templateUrl: 'templates/category-products.template.html',
         controllerAs: 'CategoriesCtrl',
-        controller: CategoriesController
+        controller: 'CategoriesController'
     });
 
     // order review
@@ -84,7 +84,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
         params: {data: null},
         templateUrl: '/templates/order-complete.template.html',
         controllerAs: 'OrderCtrl',
-        controller: OrderController
+        controller: 'OrderController'
     });
 
 
@@ -145,7 +145,7 @@ angular.module('app').controller('CartController', function(CartItemsFactory, Pr
 /**
  * Created by janko on 08/11/2016.
  */
-function CategoriesController(CategoriesFactory, $stateParams, CategoryProductsFactory, $state) {
+angular.module('app').controller('CategoriesController', function (CategoriesFactory, $stateParams, CategoryProductsFactory, $state) {
     var vm = this;
     vm.categories = CategoriesFactory.query({});
 
@@ -158,14 +158,15 @@ function CategoriesController(CategoriesFactory, $stateParams, CategoryProductsF
 
 
     vm.thisCategory = $state.params.categoryData;
-}
+    console.log('asdf');
+});
 angular.module('app').directive('categoriesDirective', function () {
     return {
         restrict: 'E',
         scope: {},
         templateUrl: '/templates/categories-list.template.html',
         controllerAs: 'CategoriesCtrl',
-        controller: CategoriesController
+        controller: 'CategoriesController'
     }
 });
 
@@ -183,12 +184,12 @@ angular.module('app').factory('CategoryProductsFactory', function ($resource) {
 /**
  * Created by janko on 09/11/2016.
  */
-function HomeDirectiveController(ProductsFactory) {
+angular.module('app').controller('HomeDirectiveController', function (ProductsFactory) {
     var vm = this;
 
     vm.interval = 3000;
     vm.productsOnSale = ProductsFactory.query({onlyOnSale: true});
-}
+});
 
 /**
  * Created by janko on 29/10/2016.
@@ -199,11 +200,11 @@ angular.module('app').directive('homeDirective', function () {
         restrict: 'E',
         templateUrl: '/templates/home.template.html',
         controllerAs: 'HomeDirCtrl',
-        controller: HomeDirectiveController
+        controller: 'HomeDirectiveController'
     };
 });
 
-    function OrderController (CartItemsFactory, OrdersFactory, $state, locker) {
+    angular.module('app').controller('OrderController',function (CartItemsFactory, OrdersFactory, $state, locker) {
     var vm = this;
 
     vm.products = CartItemsFactory.items;
@@ -254,7 +255,7 @@ angular.module('app').directive('homeDirective', function () {
 
 
 
-}
+});
 
 angular.module('app').directive('orderDirective', function () {
     return {
@@ -262,7 +263,7 @@ angular.module('app').directive('orderDirective', function () {
         scope: {},
         templateUrl: '/templates/order-form.template.html',
         controllerAs: 'OrderCtrl',
-        controller: OrderController
+        controller: 'OrderController'
     };
 });
 
@@ -270,12 +271,12 @@ angular.module('app').factory('OrdersFactory', function ($resource) {
    return $resource('http://smartninja.betoo.si/api/eshop/orders');
 });
 
- function ProductDetailsController(ProductsFactory, $stateParams) {
+angular.module('app').controller('ProductDetailsController', function (ProductsFactory, $stateParams) {
      var vm = this;
      vm.product = ProductsFactory.get({id: $stateParams.productId});
- }
+ });
 
-function ProductsController ($scope, ProductsFactory) {
+angular.module('app').controller('ProductsController', function ($scope, ProductsFactory) {
     var vm = this;
     vm.loading = true;
     // search for product by name
@@ -287,7 +288,7 @@ function ProductsController ($scope, ProductsFactory) {
         vm.loading = false;
     });
 
-}
+});
 angular.module('app').factory('ProductsFactory', function($resource, $cacheFactory) {
 	/*var products = [
 	 {
@@ -342,7 +343,7 @@ angular.module('app').controller('UsersController', function($scope){
 	
 });
 
-function MainNavigationController($http, ProductsFactory, $state, CartItemsFactory, CategoriesFactory) {
+angular.module('app').controller('MainNavigationController', function ($http, ProductsFactory, $state, CartItemsFactory, CategoriesFactory) {
     var vm = this;
     // navbar collapse
     vm.isNavCollapsed = true;
@@ -366,7 +367,7 @@ function MainNavigationController($http, ProductsFactory, $state, CartItemsFacto
 
     // categories for dropdown menu
     vm.categories = CategoriesFactory.query({});
-}
+});
 
 /**
  * Created by janko on 28/10/2016.
@@ -377,16 +378,16 @@ angular.module('app').directive('navigationDirective', function () {
         scope: true,
         templateUrl: '/templates/navigation-template.html',
         controllerAs: 'MainNavCtrl',
-        controller: MainNavigationController
+        controller: 'MainNavigationController'
     };
 });
 
 
-/**
+        /**
  * Created by janko on 12/11/2016.
  */
 
-function ClearCartController( $uibModal, locker) {
+angular.module('app').controller('ClearCartController', function ( $uibModal, locker) {
     var vm = this;
     vm.openModal = function ()
     {
@@ -395,7 +396,7 @@ function ClearCartController( $uibModal, locker) {
 
             templateUrl: '/templates/clear-cart-modal.template.html',
             controllerAs: 'ClearModalCtrl',
-            controller: ClearCartModalController,
+            controller: 'ClearCartModalController',
             resolve: {
                 input: modalInput
             }
@@ -406,7 +407,7 @@ function ClearCartController( $uibModal, locker) {
             return window.location.reload();
         });
     }
-}
+});
 
 // modal input  text inside modal
 function modalInput() {
@@ -415,7 +416,7 @@ function modalInput() {
 /**
  * Created by janko on 12/11/2016.
  */
-function ClearCartModalController ($uibModalInstance, input) {
+angular.module('app').controller('ClearCartModalController', function ($uibModalInstance, input) {
     var vm = this;
     vm.data = input;
 
@@ -426,7 +427,7 @@ function ClearCartModalController ($uibModalInstance, input) {
     vm.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     }
-}
+});
 /**
  * Created by janko on 12/11/2016.
  */
@@ -434,7 +435,7 @@ angular.module('app').directive('clearCart', function () {
     return {
         restrict: 'E',
         controllerAs: 'ClearCartCtrl',
-        controller: ClearCartController,
+        controller: 'ClearCartController',
         template: '<button class="btn btn-danger" ng-click="ClearCartCtrl.openModal()">Izprazni Košarico</button>'
     };
 });
@@ -449,7 +450,7 @@ angular.module('app').directive('onSaleDirective', function ()
 		scope: true,
 		templateUrl: '/templates/on-sale.template.html',
 		controllerAs: 'OnSaleCtrl',
-		controller: OnSaleProductsController
+		controller: 'OnSaleProductsController'
 	}
 });
 
@@ -457,11 +458,11 @@ angular.module('app').directive('onSaleDirective', function ()
  * Created by janko on 12/11/2016.
  */
 // products on sale directive controller
-function OnSaleProductsController (ProductsFactory) {
+angular.module('app').controller('OnSaleProductsController', function (ProductsFactory) {
     var vm = this;
     vm.loading = true;
     vm.products = ProductsFactory.query({onlyOnSale: true}, function (success) {
         vm.loading = false;
     });
 
-}
+});

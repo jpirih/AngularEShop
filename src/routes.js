@@ -44,14 +44,14 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
         url: '/products/:productId',
         templateUrl: '/templates/product-details.template.html',
         controllerAs: 'ProductDetailCtrl',
-        controller: ProductDetailsController
+        controller: 'ProductDetailsController'
     });
     // all products list
     $stateProvider.state('products', {
         url: '/products',
         templateUrl: '/templates/products.template.html',
         controllerAs: 'ProductsCtrl',
-        controller: ProductsController
+        controller: 'ProductsController'
     });
     // my cart
     $stateProvider.state('cart', {
@@ -67,7 +67,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
         params: {categoryData: null},
         templateUrl: 'templates/category-products.template.html',
         controllerAs: 'CategoriesCtrl',
-        controller: CategoriesController
+        controller: 'CategoriesController'
     });
 
     // order review
@@ -76,7 +76,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider) {
         params: {data: null},
         templateUrl: '/templates/order-complete.template.html',
         controllerAs: 'OrderCtrl',
-        controller: OrderController
+        controller: 'OrderController'
     });
 
 

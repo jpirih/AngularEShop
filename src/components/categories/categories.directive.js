@@ -4,6 +4,6 @@ angular.module('app').directive('categoriesDirective', function () {
         scope: {},
         templateUrl: '/templates/categories-list.template.html',
         controllerAs: 'CategoriesCtrl',
-        controller: CategoriesController
+        controller: 'CategoriesController'
     }
 });

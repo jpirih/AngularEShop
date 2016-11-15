@@ -7,7 +7,7 @@ angular.module('app').directive('navigationDirective', function () {
         scope: true,
         templateUrl: '/templates/navigation-template.html',
         controllerAs: 'MainNavCtrl',
-        controller: MainNavigationController
+        controller: 'MainNavigationController'
     };
 });
 

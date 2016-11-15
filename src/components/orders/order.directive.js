@@ -4,6 +4,6 @@ angular.module('app').directive('orderDirective', function () {
         scope: {},
         templateUrl: '/templates/order-form.template.html',
         controllerAs: 'OrderCtrl',
-        controller: OrderController
+        controller: 'OrderController'
     };
 });

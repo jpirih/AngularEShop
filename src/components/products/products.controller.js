@@ -1,4 +1,4 @@
-function ProductsController ($scope, ProductsFactory) {
+angular.module('app').controller('ProductsController', function ($scope, ProductsFactory) {
     var vm = this;
     vm.loading = true;
     // search for product by name
@@ -10,4 +10,4 @@ function ProductsController ($scope, ProductsFactory) {
         vm.loading = false;
     });
 
-}
+});

@@ -7,6 +7,6 @@ angular.module('app').directive('homeDirective', function () {
         restrict: 'E',
         templateUrl: '/templates/home.template.html',
         controllerAs: 'HomeDirCtrl',
-        controller: HomeDirectiveController
+        controller: 'HomeDirectiveController'
     };
 });

@@ -1,7 +1,7 @@
 /**
  * Created by janko on 12/11/2016.
  */
-function ClearCartModalController ($uibModalInstance, input) {
+angular.module('app').controller('ClearCartModalController', function ($uibModalInstance, input) {
     var vm = this;
     vm.data = input;
 
@@ -12,4 +12,4 @@ function ClearCartModalController ($uibModalInstance, input) {
     vm.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     }
-}
+});

@@ -1,4 +1,4 @@
-    function OrderController (CartItemsFactory, OrdersFactory, $state, locker) {
+    angular.module('app').controller('OrderController',function (CartItemsFactory, OrdersFactory, $state, locker) {
     var vm = this;
 
     vm.products = CartItemsFactory.items;
@@ -49,4 +49,4 @@
 
 
 
-}
+});
