@@ -34,6 +34,9 @@ angular.module('app').controller('CartController', function(CartItemsFactory, Pr
     {
         var index = vm.items.indexOf(item);
         vm.items.splice(index, 1);
+        locker.get('myCart');
+        $state.reload();
+
 
     }
 });
