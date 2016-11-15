@@ -140,6 +140,14 @@ angular.module('app').controller('CartController', function(CartItemsFactory, Pr
     }
     // Order Total amount to pay
     vm.cartTotal = cartTotal;
+
+    // remove item form cart
+    vm.removeItem = function (item)
+    {
+        var index = vm.items.indexOf(item);
+        vm.items.splice(index, 1);
+
+    }
 });
 
 /**

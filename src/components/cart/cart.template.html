@@ -29,10 +29,17 @@
             </thead>
             <tbody class="bg-info">
                 <tr data-ng-repeat="item in CartCtrl.items">
-                    <td><a ui-sref="productDetails({productId: item.product.id})">{{ item.product.name }}</a></td>
+                    <td>
+                        <a ui-sref="productDetails({productId: item.product.id})">
+                            {{ item.product.name }}
+                        </a>
+                    </td>
                     <td>{{ item.quantity }}</td>
                     <td>{{ item.product.price | number: 2 }}</td>
-                    <td>{{ item.total | number: 2 }}</td>
+                    <td>
+                        {{ item.total | number: 2 }}
+                        <span class="pull-right glyphicon glyphicon-remove" role="button" ng-click="CartCtrl.removeItem(item)"></span>
+                    </td>
                 </tr>
             </tbody>
         </table>
