@@ -18,11 +18,18 @@ Napisanih je samo nekaj osnovnih gulp taskov:
 2. Preglej podrobnosti o izdelku 
 3. Dodaj izdelek v košarico
 4. Preglej vse izdelke, ki so v košarici
+5. Izbriši izdelke iz košarice
+6. oddaj naročilo 
+7. Preglej povzetek naročila
+8. Ktegorije izdelkov 
+9. Iskalnik izdelkov v navigaciji in nad seznamom vseh izdelkov 
 
 
 ## Namen
-Namen tega repositorija Učeneje Angular js Framework-a. 
+Namen tega repositorija Učeneje Angular js Framework-a.
 
+## Opombe
+Izdelano v okviru SmartNinja AngularJS tečaja.
 Podlanišče 30.10.2016       
 
 Janko Pirih

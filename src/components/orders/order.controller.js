@@ -4,9 +4,6 @@
         vm.products = CartItemsFactory.items;
         vm.orderDetails = locker.get('orderDetails', []);
 
-
-
-
         var products = [];
 
         for (item in vm.products)
@@ -16,9 +13,6 @@
                 quantity: vm.products[item].quantity
             });
         }
-
-
-
 
 
         // place order
@@ -56,7 +50,5 @@
             return window.location.reload()
 
         }
-
-
 
 });
