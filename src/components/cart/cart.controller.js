@@ -1,14 +1,13 @@
 
 angular.module('app').controller('CartController', function(CartItemsFactory, ProductsFactory, locker, $state) {
     var vm = this;
+    vm.show = false;
     vm.items = CartItemsFactory.items;
-
     vm.products = ProductsFactory.query({});
     vm.totalItems = 0;
     vm.quantity = 1;
     var itemTotal = 0;
     var selectedItem = {};
-
 
     // add product to cart
     vm.addToCart = function (product)
@@ -29,6 +28,7 @@ angular.module('app').controller('CartController', function(CartItemsFactory, Pr
     }
     // Order Total amount to pay
     vm.cartTotal = cartTotal;
+
 
     // remove item form cart
     vm.removeItem = function (item)

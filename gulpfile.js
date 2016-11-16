@@ -59,7 +59,8 @@ gulp.task('libs', function () {
     gulp.src('./bower_components/angular-locker/dist/angular-locker.min.js')
         .pipe(gulp.dest('./dist/libs/angular'))
         .pipe(notify('Angular locker included'));
-	gulp.src('./bower_components/angular-animate/angular-animate.min.js')
+
+	gulp.src('./bower_components/angular-animate/angular-animate.js')
 		.pipe(gulp.dest('./dist/libs/angular'))
 		.pipe(notify('Angular animate included'));
 

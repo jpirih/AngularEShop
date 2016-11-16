@@ -113,14 +113,13 @@ angular.module('app').factory('CartItemsFactory', function (locker) {
 
 angular.module('app').controller('CartController', function(CartItemsFactory, ProductsFactory, locker, $state) {
     var vm = this;
+    vm.show = false;
     vm.items = CartItemsFactory.items;
-
     vm.products = ProductsFactory.query({});
     vm.totalItems = 0;
     vm.quantity = 1;
     var itemTotal = 0;
     var selectedItem = {};
-
 
     // add product to cart
     vm.addToCart = function (product)
@@ -142,6 +141,7 @@ angular.module('app').controller('CartController', function(CartItemsFactory, Pr
     // Order Total amount to pay
     vm.cartTotal = cartTotal;
 
+
     // remove item form cart
     vm.removeItem = function (item)
     {
@@ -154,96 +154,6 @@ angular.module('app').controller('CartController', function(CartItemsFactory, Pr
 
     }
 
-});
-
-/**
- * Created by janko on 09/11/2016.
- */
-angular.module('app').controller('HomeDirectiveController', function (ProductsFactory) {
-    var vm = this;
-
-    vm.interval = 3000;
-    vm.productsOnSale = ProductsFactory.query({onlyOnSale: true});
-});
-
-/**
- * Created by janko on 29/10/2016.
- */
-angular.module('app').directive('homeDirective', function () {
-    return {
-        scope: {},
-        restrict: 'E',
-        templateUrl: '/templates/home.template.html',
-        controllerAs: 'HomeDirCtrl',
-        controller: 'HomeDirectiveController'
-    };
-});
-
-    angular.module('app').controller('OrderController',function (CartItemsFactory, OrdersFactory, $state, locker) {
-    var vm = this;
-
-    vm.products = CartItemsFactory.items;
-    vm.orderDetails = locker.get('orderDetails', []);
-
-    var products = [];
-
-    for (item in vm.products)
-    {
-        products.push({
-            id: vm.products[item].product.id,
-            quantity: vm.products[item].quantity
-        });
-    }
-    // place order
-    vm.orderUP = function (firstName, lastName, customerEmail, address, zipCode, city, country)
-    {
-        var newOrder = new OrdersFactory({
-            firstName: firstName,
-            lastName: lastName,
-            email: customerEmail,
-            address: address,
-            zip: zipCode,
-            city: city,
-            country: country,
-            products: products
-        });
-        locker.put('orderDetails', newOrder);
-        // save order to api server
-        newOrder.$save(function (response) {
-            // get saving order response message
-            vm.msg = {msg: response.status};
-            $state.go('orderComplete', {data: vm.msg});
-            console.log(vm.msg);
-        });
-    };
-    // order success message
-    vm.resData = $state.params.data;
-
-    // order complete // button Nazaj back to index on order review
-    vm.orderComplete = function () {
-        locker.forget('myCart');
-        locker.forget('orderDetails');
-        $state.go('index');
-        return window.location.reload()
-
-    }
-
-
-
-});
-
-angular.module('app').directive('orderDirective', function () {
-    return {
-        restrict: 'E',
-        scope: {},
-        templateUrl: '/templates/order-form.template.html',
-        controllerAs: 'OrderCtrl',
-        controller: 'OrderController'
-    };
-});
-
-angular.module('app').factory('OrdersFactory', function ($resource) {
-   return $resource('http://smartninja.betoo.si/api/eshop/orders');
 });
 
 /**
@@ -285,9 +195,110 @@ angular.module('app').factory('CategoryProductsFactory', function ($resource) {
     return $resource('http://smartninja.betoo.si/api/eshop/categories/:id/products');
 });
 
+/**
+ * Created by janko on 09/11/2016.
+ */
+angular.module('app').controller('HomeDirectiveController', function (ProductsFactory) {
+    var vm = this;
+
+    vm.interval = 3000;
+    vm.productsOnSale = ProductsFactory.query({onlyOnSale: true});
+});
+
+/**
+ * Created by janko on 29/10/2016.
+ */
+angular.module('app').directive('homeDirective', function () {
+    return {
+        scope: {},
+        restrict: 'E',
+        templateUrl: '/templates/home.template.html',
+        controllerAs: 'HomeDirCtrl',
+        controller: 'HomeDirectiveController'
+    };
+});
+
+    angular.module('app').controller('OrderController',function (CartItemsFactory, OrdersFactory, $state, locker) {
+
+        var vm = this;
+        vm.products = CartItemsFactory.items;
+        vm.orderDetails = locker.get('orderDetails', []);
+
+
+
+
+        var products = [];
+
+        for (item in vm.products)
+        {
+            products.push({
+                id: vm.products[item].product.id,
+                quantity: vm.products[item].quantity
+            });
+        }
+
+
+
+
+
+        // place order
+        vm.orderUP = function (firstName, lastName, customerEmail, address, zipCode, city, country, message)
+        {
+            var newOrder = new OrdersFactory({
+                firstName: firstName,
+                lastName: lastName,
+                email: customerEmail,
+                address: address,
+                zip: zipCode,
+                city: city,
+                country: country,
+                products: products,
+                message: message
+
+            });
+            locker.put('orderDetails', newOrder);
+            // save order to api server
+            newOrder.$save(function (response) {
+                // get saving order response message
+                vm.msg = {msg: response.status};
+                $state.go('orderComplete', {data: vm.msg});
+                console.log(vm.msg);
+            });
+        };
+        // order success message
+        vm.resData = $state.params.data;
+
+        // order complete // button Nazaj back to index on order review
+        vm.orderComplete = function () {
+            locker.forget('myCart');
+            locker.forget('orderDetails');
+            $state.go('index');
+            return window.location.reload()
+
+        }
+
+
+
+});
+
+angular.module('app').directive('orderDirective', function () {
+    return {
+        restrict: 'E',
+        scope: {},
+        templateUrl: '/templates/order-form.template.html',
+        controllerAs: 'OrderCtrl',
+        controller: 'OrderController'
+    };
+});
+
+angular.module('app').factory('OrdersFactory', function ($resource) {
+   return $resource('http://smartninja.betoo.si/api/eshop/orders');
+});
+
 angular.module('app').controller('ProductDetailsController', function (ProductsFactory, $stateParams) {
-     var vm = this;
-     vm.product = ProductsFactory.get({id: $stateParams.productId});
+
+    var vm = this;
+    vm.product = ProductsFactory.get({id: $stateParams.productId});
  });
 
 angular.module('app').controller('ProductsController', function ($scope, ProductsFactory) {

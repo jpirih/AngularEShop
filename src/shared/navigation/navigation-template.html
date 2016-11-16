@@ -32,15 +32,8 @@
             </form>
             <ul class="nav navbar-nav navbar-right">
                 <li><a ui-sref="products">Products</a></li>
-                <li class="dropdown">
-                    <a ui-sref="cart"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Košarica ({{ MainNavCtrl.items.length }}) <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                    </ul>
+                <li>
+                    <a ui-sref="cart" role="button" aria-haspopup="true" aria-expanded="false">Košarica ({{ MainNavCtrl.items.length }})</a>
                 </li>
             </ul>
         </div><!-- /.navbar-collapse -->
