@@ -1,0 +1,103 @@
+
+//variables
+
+$importantTextColor: red;
+$importantBorder: 2px solid black;
+$sitePaddingTop: 50px;
+$sitePaddingBottom: 50px;
+$tableDataBackground: #99ccff;
+$tableHeaderBackground: #23527c;
+$tableHeaderTextColor: #ffffff;
+$tableLinkColor: #000000;
+
+
+@mixin border-radius($radius) {
+  -moz-border-radius: $radius;
+  -webkit-border-radius: $radius;
+  border-radius: $radius;
+}
+
+
+  body {
+  padding-top:  $sitePaddingTop;
+  padding-bottom: $sitePaddingBottom;
+}
+
+.text-bold{
+  font-weight: bold;
+}
+
+.box{
+  padding: 15px;
+  margin: 10px;
+  border: 1px solid lightgrey;
+  @include border-radius(5px);
+}
+.info-box{
+  @extend .box;
+  background: lightcyan;
+}
+
+.message-box
+{
+  @extend .box;
+  background: lightyellow;
+}
+
+.on-sale{
+  color: $importantTextColor;
+  font-weight: bolder;
+}
+
+.slider-box{
+  @extend .info-box;
+  border: $importantBorder;
+  @include border-radius(15px);
+}
+
+table{
+  a{
+    color:$tableLinkColor;
+    text-decoration: none;
+  }
+  & a:hover{
+    color: $tableLinkColor;
+
+  }
+  .table-header{
+    @extend .text-bold;
+    color: $tableHeaderTextColor;
+    background: $tableHeaderBackground;
+  }
+  .table-data{
+    background: $tableDataBackground;
+
+  }
+}
+
+
+
+// message box animation
+.transition-box-show
+{
+  &.ng-enter{
+    transition : 0.5s linear all;
+    opacity    : 0;
+
+    &.ng-enter-active{
+      opacity : 1;
+    }
+  }
+
+  &.ng-leave{
+    transition : 0.5s linear all;
+    opacity    : 1;
+
+
+    &.ng-leave-active{
+      opacity: 0;
+    }
+  }
+
+}
+

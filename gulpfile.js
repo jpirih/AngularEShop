@@ -3,6 +3,8 @@ var concat = require('gulp-concat');
 var notify = require('gulp-notify');
 var flatten = require('gulp-flatten');
 var webserver = require('gulp-webserver');
+var sass = require('gulp-sass');
+var cleanCSS = require('gulp-clean-css');
 
 // compile all javascript files
 gulp.task('scripts', function () {
@@ -71,11 +73,12 @@ gulp.task('libs', function () {
 
 // move my custom css files to dist
 gulp.task('loadCss', function () {
-	gulp.src('./src/**/*.css')
+	gulp.src('./src/**/*.scss')
 		.pipe(flatten())
-		.pipe(concat('my-theme.css'))
+		.pipe(sass())
+		.pipe(cleanCSS())
 		.pipe(gulp.dest('./dist/css'))
-		.pipe(notify('Move css files success'));
+		.pipe(notify('Scss compiled  success'));
 });
 
 // watcher
@@ -83,7 +86,7 @@ gulp.task('watch', ['serve'], function () {
 	gulp.start(['scripts', 'move', 'libs', 'loadCss']);
 	gulp.watch(['src/**/*.js'], ['scripts']);
 	gulp.watch(['src/**/*.html'], ['move']);
-	gulp.watch(['src/**/*.css'], ['loadCss']);
+	gulp.watch(['src/**/*.scss'], ['loadCss']);
 }); 	
 
 
