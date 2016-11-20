@@ -52,6 +52,13 @@ gulp.task('libs', function () {
 
 });
 
+// vendor fonts
+gulp.task('vendorFonts', function () {
+	gulp.src("./bower_components/bootstrap/dist/fonts/*")
+		.pipe(gulp.dest('./dist/fonts'));
+
+});
+
 // move my custom css files to dist
 gulp.task('loadCss', function () {
 	gulp.src('./src/**/*.scss')
@@ -64,7 +71,7 @@ gulp.task('loadCss', function () {
 
 // watcher
 gulp.task('watch', ['serve'], function () {
-	gulp.start(['scripts', 'move', 'libs', 'loadCss']);
+	gulp.start(['scripts', 'move', 'libs', 'loadCss', 'vendorFonts']);
 	gulp.watch(['src/**/*.js'], ['scripts']);
 	gulp.watch(['src/**/*.html'], ['move']);
 	gulp.watch(['src/**/*.scss'], ['loadCss']);
