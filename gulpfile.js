@@ -6,11 +6,18 @@ var webserver = require('gulp-webserver');
 var sass = require('gulp-sass');
 var cleanCSS = require('gulp-clean-css');
 var fs = require('fs');
+var rename = require('gulp-rename');
+var uglify = require('gulp-uglify');
+var anotate = require('gulp-ng-annotate');
 
 // compile all javascript files
 gulp.task('scripts', function () {
 	gulp.src(['scr/app.js', 'src/**/*.js'])
+		.pipe(anotate())
 		.pipe(concat('all.js'))
+		.pipe(gulp.dest('./dist/js'))
+		.pipe(rename('all.min.js'))
+		.pipe(uglify())
 		.pipe(gulp.dest('./dist/js'))
 		.pipe(notify('Javascript compiled successfully!'));
 });
@@ -48,7 +55,7 @@ gulp.task('libs', function () {
 	gulp.src(dependencies.styles)
 		.pipe(concat('vendor.css'))
 		.pipe(gulp.dest('./dist/css'))
-		.pipe(notify("Vendor css compiled success fully"));
+		.pipe(notify("Vendor css compiled successfully"));
 
 });
 
