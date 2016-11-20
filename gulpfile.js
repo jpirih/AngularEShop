@@ -5,6 +5,7 @@ var flatten = require('gulp-flatten');
 var webserver = require('gulp-webserver');
 var sass = require('gulp-sass');
 var cleanCSS = require('gulp-clean-css');
+var fs = require('fs');
 
 // compile all javascript files
 gulp.task('scripts', function () {
@@ -38,37 +39,17 @@ gulp.task('serve', function () {
 
 // move libraries to dist
 gulp.task('libs', function () {
-	gulp.src('./bower_components/angular/angular.min.js')
-		.pipe(gulp.dest('./dist/libs/angular'))
-		.pipe(notify('Angular move success!'));
+	var dependencies = JSON.parse(fs.readFileSync('./dependencies.json'));
+	gulp.src(dependencies.scripts)
+		.pipe(concat('vendor.js'))
+		.pipe(gulp.dest('./dist/js'))
+		.pipe(notify("Vendor JS file compiled successfully"));
 
-	gulp.src('./bower_components/bootstrap/dist/**')
-		.pipe(gulp.dest('./dist/libs/bootstrap'))
-		.pipe(notify('Bootstrap move success'));
+	gulp.src(dependencies.styles)
+		.pipe(concat('vendor.css'))
+		.pipe(gulp.dest('./dist/css'))
+		.pipe(notify("Vendor css compiled success fully"));
 
-	gulp.src('./bower_components/angular-ui-router/release/angular-ui-router.min.js')
-		.pipe(gulp.dest('./dist/libs/angular'))
-		.pipe(notify('Angular ui-router include success'));
-
-	gulp.src('./bower_components/angular-resource/angular-resource.min.js')
-		.pipe(gulp.dest('./dist/libs/angular'))
-		.pipe(notify('Angular resource included successfully!'));
-    
-    gulp.src('./bower_components/angular-bootstrap/ui-bootstrap-tpls.js')
-        .pipe(gulp.dest('./dist/libs/angular'))
-        .pipe(notify('Angular bootstrap included'));
-    
-    gulp.src('./bower_components/angular-locker/dist/angular-locker.min.js')
-        .pipe(gulp.dest('./dist/libs/angular'))
-        .pipe(notify('Angular locker included'));
-
-	gulp.src('./bower_components/angular-animate/angular-animate.js')
-		.pipe(gulp.dest('./dist/libs/angular'))
-		.pipe(notify('Angular animate included'));
-
-	gulp.src('./bower_components/jquery/dist/jquery.js')
-		.pipe(gulp.dest('./dist/libs/jquery'))
-		.pipe(notify('Jquery include success'));
 });
 
 // move my custom css files to dist

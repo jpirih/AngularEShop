@@ -10,7 +10,7 @@ $tableHeaderBackground: #23527c;
 $tableHeaderTextColor: #ffffff;
 $tableLinkColor: #000000;
 
-
+// border radius
 @mixin border-radius($radius) {
   -moz-border-radius: $radius;
   -webkit-border-radius: $radius;
@@ -18,7 +18,7 @@ $tableLinkColor: #000000;
 }
 
 
-  body {
+body {
   padding-top:  $sitePaddingTop;
   padding-bottom: $sitePaddingBottom;
 }
@@ -41,6 +41,11 @@ $tableLinkColor: #000000;
 {
   @extend .box;
   background: lightyellow;
+}
+
+.total-box{
+  @extend .box;
+  background: #ccff99;
 }
 
 .on-sale{
