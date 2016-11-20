@@ -29,7 +29,6 @@ $tableLinkColor: #000000;
 
 .box{
   padding: 15px;
-  margin: 10px;
   border: 1px solid lightgrey;
   @include border-radius(5px);
 }
@@ -54,7 +53,7 @@ $tableLinkColor: #000000;
   border: $importantBorder;
   @include border-radius(15px);
 }
-
+ // table styles
 table{
   a{
     color:$tableLinkColor;
